@@ -1,45 +1,62 @@
 package com.example.beta
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.example.beta.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private lateinit var bottomNavView: BottomNavigationView
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+            setupToolbar()
+            setupNavigation()
+    }
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+
+    private fun setupToolbar() {
+        val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
+    }
 
-        drawerLayout = findViewById(R.id.drawer_layout)
+    private fun setupNavigation() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        // Then initialize navController with the NavController from the NavHostFragment
+        navController = navHostFragment.navController
+
+        drawerLayout = binding.drawerLayout
+        navView = binding.navView
+        bottomNavView = binding.bottomNavView
 
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-
+            this, drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navView = findViewById(R.id.nav_view)
-        bottomNavView = findViewById(R.id.bottom_nav_view)
 
-        val navController: NavController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration.Builder(navController.graph)
+        appBarConfiguration = AppBarConfiguration.Builder(navController.graph)
             .setOpenableLayout(drawerLayout)
             .build()
 
@@ -50,12 +67,18 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_drawer_perfil -> {
-                    // Manejar la selección del elemento 1 en el Drawer Menu
-                    Toast.makeText(this, "Item 1 seleccionado en el Drawer Menu", Toast.LENGTH_SHORT).show()
+                    bottomNavView.visibility = View.GONE
+                    navController.navigate(R.id.action_global_nav_drawer_perfil)
+                    Toast.makeText(this, "Item 1 selected in Drawer Menu", Toast.LENGTH_SHORT).show()
                 }
                 R.id.nav_drawer_configuracion -> {
-                    // Manejar la selección del elemento 2 en el Drawer Menu
-                    Toast.makeText(this, "Item 2 seleccionado en el Drawer Menu", Toast.LENGTH_SHORT).show()
+                    bottomNavView.visibility = View.GONE
+                    navController.navigate(R.id.action_global_nav_drawer_configuracion)
+                    Toast.makeText(this, "Item 2 selected in Drawer Menu", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    supportActionBar?.show()
+                    bottomNavView.visibility = View.VISIBLE
                 }
             }
             drawerLayout.closeDrawers()
@@ -64,7 +87,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        return NavigationUI.navigateUp(navController, drawerLayout) || super.onSupportNavigateUp()
+        // Check if the current destination is the PerfilFragment
+        if (navController.currentDestination?.id == R.id.nav_drawer_perfil || navController.currentDestination?.id == R.id.nav_drawer_configuracion) {
+            // Handle your custom back action here. For example, pop the back stack:
+            navController.popBackStack()
+            return true
+        } else {
+            return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp()
+        }
     }
 }
