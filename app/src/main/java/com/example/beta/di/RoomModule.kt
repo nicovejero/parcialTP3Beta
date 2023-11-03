@@ -1,9 +1,9 @@
 //Dependency Injection
-package com.ort.edu.mvvmexample.di
+package com.example.beta.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ort.edu.mvvmexample.data.database.QuoteDatabase
+import com.example.beta.data.database.BreedDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,16 +15,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
-    private const val QUOTE_DATABASE_NAME = "quote_database"
+    private const val BREED_DATABASE_NAME = "breed_database"
 
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, QuoteDatabase::class.java, QUOTE_DATABASE_NAME)
+        Room.databaseBuilder(context, BreedDatabase::class.java, BREED_DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
 
     @Singleton
     @Provides
-    fun provideQuoteDao(db: QuoteDatabase) = db.getQuoteDao()
+    fun provideBreedDao(db: BreedDatabase) = db.getBreedDao()
 }

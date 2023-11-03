@@ -4,8 +4,8 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
-    id("org.jetbrains.kotlin.kapt")
-    id("dagger.hilt.android.plugin")
+    //id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -18,7 +18,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -46,7 +45,7 @@ android {
 }
 
 dependencies {
-
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
@@ -87,9 +86,10 @@ dependencies {
 
     //dagger hilt
     implementation("com.google.dagger:hilt-android:2.41")
-    kapt("com.google.dagger:hilt-android-compiler:2.41")
+    //kapt("com.google.dagger:hilt-android-compiler:2.41")
+    ksp("com.google.dagger:hilt-android-compiler:2.41")
 
     //Room
     implementation("androidx.room:room-ktx:2.6.0")
-    kapt("androidx.room:room-compiler:2.6.0")
+    ksp("androidx.room:room-compiler:2.6.0")
 }

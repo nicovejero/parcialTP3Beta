@@ -5,12 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.beta.domain.model.Breed
 
-@Entity(tableName = "breed_table")
+@Entity(tableName = "breeds")
 data class BreedEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id: Int = 0,
-    @ColumnInfo(name = "breed") val breed: String,
+    @ColumnInfo(name = "breed") val breedName: String,
 )
 
-
-fun Breed.toDatabase() = BreedEntity(breed = breed)
+fun Breed.toDatabase() = BreedEntity(breedName = breedName)

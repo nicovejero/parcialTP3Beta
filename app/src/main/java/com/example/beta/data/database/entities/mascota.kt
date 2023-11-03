@@ -18,8 +18,8 @@ data class Pet(
         source.readString() ?: "",
         source.readString() ?: "",
         source.readString() ?: "",
-        source.readInt(),
-        source.readBoolean()
+        source.readInt() ?: 0,
+        source.readBoolean() ?: false
     )
 
     override fun describeContents() = 0
