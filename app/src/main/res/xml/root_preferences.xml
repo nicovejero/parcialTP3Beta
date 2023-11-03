@@ -1,35 +1,20 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <!-- Agrega una Preferencia de Retroceso -->
+    <Preference
+        app:title="atras"
+        app:fragment="com.example.beta.fragments.ConfiguracionFragment"
+        app:key="back_key" />
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+    <!-- Agrega una Preferencia de Título -->
+    <PreferenceCategory app:title="Generales" />
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+    <!-- Agrega una Preferencia Switch para el Modo Oscuro -->
+    <SwitchPreferenceCompat
+        app:key="dark_mode"
+        app:summaryOff="Apagar el modo oscuro"
+        app:summaryOn="Activar el modo oscuro"
+        app:title="Modo Oscuro" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
-
-    </PreferenceCategory>
 
 </PreferenceScreen>

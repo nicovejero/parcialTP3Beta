@@ -9,40 +9,37 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.beta.fragments.HomeFragment"
-        android:label="HomeFragment">
-    </fragment>
+        android:label="HomeFragment" />
 
     <!-- Fragmentos para Drawer Menu -->
     <fragment
         android:id="@+id/nav_drawer_perfil"
         android:name="com.example.beta.fragments.PerfilFragment"
-        android:label=" drawer_perfil">
-    </fragment>
+        android:label="Perfil" />
+
     <fragment
         android:id="@+id/nav_drawer_configuracion"
         android:name="com.example.beta.fragments.SettingFragment"
-        android:label="drawer_configuracion">
-    </fragment>
+        android:label="Configuración" />
 
     <!-- Fragmentos para Bottom Navigation Menu -->
     <fragment
         android:id="@+id/bottom_home"
         android:name="com.example.beta.fragments.HomeFragment"
-        android:label="Home">
-    </fragment>
+        android:label="Home" />
+
     <fragment
         android:id="@+id/bottom_favoritos"
         android:name="com.example.beta.fragments.FavoritosFragment"
-        android:label="Favoritos">
-    </fragment>
+        android:label="Favoritos" />
+
     <fragment
         android:id="@+id/bottom_adopcion"
         android:name="com.example.beta.fragments.AdopcionFragment"
-        android:label="Adoppción">
-    </fragment>
+        android:label="Adopción" />
+
     <fragment
         android:id="@+id/bottom_publicacion"
         android:name="com.example.beta.fragments.PublicacionFragment"
-        android:label="Publicación">
-    </fragment>
+        android:label="Publicación" />
 </navigation>
