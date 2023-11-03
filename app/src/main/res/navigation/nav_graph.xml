@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/bottom_home">
+    app:startDestination="@id/bottom_home">
+    <action
+        android:id="@+id/action_global_nav_drawer_perfil"
+        app:destination="@id/nav_drawer_perfil"
+        app:launchSingleTop="true" />
 
-    <!-- Destino del fragmento principal -->
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.beta.fragments.HomeFragment"
-        android:label="HomeFragment" />
+    <action
+        android:id="@+id/action_global_nav_drawer_configuracion"
+        app:destination="@id/nav_drawer_configuracion"
+        app:launchSingleTop="true" />
 
     <!-- Fragmentos para Drawer Menu -->
-    <fragment
-        android:id="@+id/nav_drawer_perfil"
-        android:name="com.example.beta.fragments.PerfilFragment"
-        android:label="Perfil" />
+        <fragment
+            android:id="@+id/nav_drawer_perfil"
+            android:name="com.example.beta.fragments.PerfilFragment"
+            android:label="DrawerPerfil" />
 
-    <fragment
-        android:id="@+id/nav_drawer_configuracion"
-        android:name="com.example.beta.fragments.SettingFragment"
-        android:label="Configuración" />
+        <fragment
+            android:id="@+id/nav_drawer_configuracion"
+            android:name="com.example.beta.fragments.SettingFragment"
+            android:label="DrawerConfiguracion" />
+
 
     <!-- Fragmentos para Bottom Navigation Menu -->
-    <fragment
-        android:id="@+id/bottom_home"
-        android:name="com.example.beta.fragments.HomeFragment"
-        android:label="Home" />
+        <fragment
+            android:id="@+id/bottom_home"
+            android:name="com.example.beta.fragments.HomeFragment"
+            android:label="Home" />
+        <fragment
+            android:id="@+id/bottom_favoritos"
+            android:name="com.example.beta.fragments.FavoritosFragment"
+            android:label="Favoritos" />
+        <fragment
+            android:id="@+id/bottom_adopcion"
+            android:name="com.example.beta.fragments.HomeFragment"
+            android:label="Home" />
+        <fragment
+            android:id="@+id/bottom_publicacion"
+            android:name="com.example.beta.fragments.PublicacionFragment"
+            android:label="Publicación" />
 
-    <fragment
-        android:id="@+id/bottom_favoritos"
-        android:name="com.example.beta.fragments.FavoritosFragment"
-        android:label="Favoritos" />
-
-    <fragment
-        android:id="@+id/bottom_adopcion"
-        android:name="com.example.beta.fragments.AdopcionFragment"
-        android:label="Adopción" />
-
-    <fragment
-        android:id="@+id/bottom_publicacion"
-        android:name="com.example.beta.fragments.PublicacionFragment"
-        android:label="Publicación" />
 </navigation>
