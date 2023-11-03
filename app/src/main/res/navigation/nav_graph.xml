@@ -36,7 +36,7 @@
             android:label="Favoritos" />
         <fragment
             android:id="@+id/bottom_adopcion"
-            android:name="com.example.beta.fragments.HomeFragment"
+            android:name="com.example.beta.fragments.AdopcionFragment"
             android:label="Home" />
         <fragment
             android:id="@+id/bottom_publicacion"
