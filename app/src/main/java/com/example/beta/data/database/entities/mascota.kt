@@ -1,4 +1,4 @@
-package com.example.beta.data.entities
+package com.example.beta.data.database.entities
 
 import android.os.Parcel
 import android.os.Parcelable

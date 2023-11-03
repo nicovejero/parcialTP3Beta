@@ -22,4 +22,10 @@
     <string name="navigation_drawer_open">Abrir Menú</string>
     <string name="navigation_drawer_close">Cerrar Menú</string>
     <string name="inicio_login_button_text">Get Started</string>
+
+
+    <!-- Publicaciones -->
+    <string name="Required">Campo Requerido</string>
+    <string name="eTDireccion_hint" translatable="false">Dirección</string>
+
 </resources>

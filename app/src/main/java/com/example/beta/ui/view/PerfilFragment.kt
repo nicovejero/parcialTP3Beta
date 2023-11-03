@@ -1,7 +1,6 @@
-package com.example.beta.fragments
+package com.example.beta.ui.view
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,9 +11,8 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.beta.InicioActivity
 import com.example.beta.R
-import com.example.beta.data.entities.User
+import com.example.beta.data.database.entities.User
 import com.example.beta.databinding.FragmentPerfilBinding
-import com.example.beta.viewmodel.PerfilViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.beta.data.entities.User
+import com.example.beta.data.database.entities.User
 import com.example.beta.databinding.ActivityInicioBinding
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity

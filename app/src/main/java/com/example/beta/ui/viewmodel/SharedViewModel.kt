@@ -1,9 +1,9 @@
-package com.example.beta.viewmodel
+package com.example.beta.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.beta.data.entities.User
+import com.example.beta.data.database.entities.User
 
 class SharedViewModel : ViewModel() {
     private val currentUser: MutableLiveData<User> = MutableLiveData()

@@ -1,4 +1,4 @@
-package com.example.beta.viewmodel
+package com.example.beta.ui.viewmodel
 
 import android.app.Application
 import android.util.Log

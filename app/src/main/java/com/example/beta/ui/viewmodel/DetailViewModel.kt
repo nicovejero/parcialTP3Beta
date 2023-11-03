@@ -1,7 +1,7 @@
-package com.example.beta.viewmodel
+package com.example.beta.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 
-class FavoritosViewModel : ViewModel() {
+class DetailViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }
