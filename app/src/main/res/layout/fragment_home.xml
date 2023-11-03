@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <!-- Buscador -->
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/buscador"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="Buscador" />
 
-</FrameLayout>
+    <!-- Contenedor del filtro y título -->
+    <FrameLayout
+        android:id="@+id/contenedorFiltroTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buscador">
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Filtros"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Mas filtros -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Más filtros" />
+
+        <!-- Filtros (usando ChipGroup) -->
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="56dp" />
+
+    </FrameLayout>
+
+    <!-- RecyclerView de las Cards -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contenedorFiltroTitulo"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="100dp" />
+
+</RelativeLayout>
