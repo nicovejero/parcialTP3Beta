@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -22,8 +23,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var navController: NavController
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,14 +52,24 @@ class MainActivity : AppCompatActivity() {
         bottomNavView = binding.bottomNavView
 
         val toggle = ActionBarDrawerToggle(
+
             this, drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+
         )
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
 
+
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+
+//        val appBarConfiguration = AppBarConfiguration.Builder(
+//            R.id.homeFragment, // Agrega aquí los IDs de fragmentos principales
+//            R.id.nav_drawer_perfil, R.id.nav_drawer_configuracion
+//        )
         appBarConfiguration = AppBarConfiguration.Builder(navController.graph)
+
             .setOpenableLayout(drawerLayout)
             .build()
 
@@ -67,6 +80,14 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_drawer_perfil -> {
+
+                    // Navegar al fragmento Perfil en el Drawer Menu
+//                    navController.navigate(R.id.nav_drawer_perfil)
+//                }
+//                R.id.nav_drawer_configuracion -> {
+//                    // Navegar al fragmento Configuración en el Drawer Menu
+//                    navController.navigate(R.id.nav_drawer_configuracion)
+
                     bottomNavView.visibility = View.GONE
                     navController.navigate(R.id.action_global_nav_drawer_perfil)
                     Toast.makeText(this, "Item 1 selected in Drawer Menu", Toast.LENGTH_SHORT).show()
@@ -79,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     supportActionBar?.show()
                     bottomNavView.visibility = View.VISIBLE
+
                 }
             }
             drawerLayout.closeDrawers()
@@ -87,6 +109,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
+
+    //    return NavigationUI.navigateUp(navController, drawerLayout) || super.onSupportNavigateUp()
+
         // Check if the current destination is the PerfilFragment
         if (navController.currentDestination?.id == R.id.nav_drawer_perfil || navController.currentDestination?.id == R.id.nav_drawer_configuracion) {
             // Handle your custom back action here. For example, pop the back stack:
@@ -95,5 +120,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp()
         }
+
     }
 }
