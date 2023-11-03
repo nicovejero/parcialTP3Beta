@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/bottom_home">
     <action
@@ -41,6 +40,7 @@
             android:label="Home" />
         <fragment
             android:id="@+id/bottom_publicacion"
-            android:name="com.example.beta.fragments.FavoritosFragment"
-            android:label="Favoritos" />
+            android:name="com.example.beta.fragments.PublicacionFragment"
+            android:label="Publicación" />
+
 </navigation>
