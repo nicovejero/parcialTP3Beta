@@ -37,7 +37,7 @@
         <fragment
             android:id="@+id/bottom_adopcion"
             android:name="com.example.beta.fragments.AdopcionFragment"
-            android:label="Home" />
+            android:label="Adopción" />
         <fragment
             android:id="@+id/bottom_publicacion"
             android:name="com.example.beta.fragments.PublicacionFragment"
