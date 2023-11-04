@@ -3,7 +3,6 @@
     <!-- Agrega una Preferencia de Retroceso -->
     <Preference
         app:title="atras"
-        app:fragment="com.example.beta.fragments.ConfiguracionFragment"
         app:key="back_key" />
 
     <!-- Agrega una Preferencia de Título -->
