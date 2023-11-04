@@ -23,6 +23,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
         <!-- Contenedor del fragmento Perfil -->
         <FrameLayout
             android:id="@+id/fragment_perfil_container"
@@ -49,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:menu="@menu/bottom_nav_menu" />
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -3,8 +3,10 @@
 
     <item
         android:id="@+id/nav_drawer_perfil"
-        android:title="Perfil" />
+        android:title="Perfil"
+        android:icon="@drawable/usuario"/>
     <item
         android:id="@+id/nav_drawer_configuracion"
-        android:title="Configuración" />
+        android:title="Configuración"
+        android:icon="@drawable/configuraciones"/>
 </menu>
