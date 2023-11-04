@@ -3,8 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <!-- Contenedor del filtro  -->
     <FrameLayout
         android:id="@+id/contenedorTituloFavoritos"
@@ -20,7 +18,7 @@
             android:layout_gravity="start|top"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Favoritos"
+            android:text="@string/favoritos_text"
             android:textSize="24sp"
             android:textStyle="bold" />
 

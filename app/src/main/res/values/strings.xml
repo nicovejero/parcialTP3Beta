@@ -6,7 +6,8 @@
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
     <string name="web_client_id">660529984089-ie5on2viskne8e53h850334cmss0vnr0.apps.googleusercontent.com</string>
-
+    <string name="breeds_api_base_url">https://dog.ceo/</string>
+    <string name="api_key">nXvVwa3BwGjnmv9mu1AX4A==pVOAYana8Af00B5v</string>
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
@@ -22,4 +23,18 @@
     <string name="navigation_drawer_open">Abrir Menú</string>
     <string name="navigation_drawer_close">Cerrar Menú</string>
     <string name="inicio_login_button_text">Get Started</string>
+
+
+    <!-- Publicaciones -->
+    <string name="Required">Campo Requerido</string>
+    <string name="eTDireccion_hint" translatable="false">Dirección</string>
+    <string name="publishFr_choose_breed">Seleccioná la Raza</string>
+    <string name="publishFr_choose_subbreed">Seleccioná la sub raza</string>
+    <string name="publishFr_confirmButton_text">Poner en Adopción</string>
+    <string name="dogs_api_base_url">https://dog.ceo/</string>
+    <string name="favoritos_text">Favoritos</string>
+    <string name="publishFr_gender_female">Hembra</string>
+    <string name="publishFr_gender_male">Macho</string>
+    <string name="publishFr_choose_age">Seleccioná la Edad</string>
+    <string name="publishFr_gender_label">Seleccioná el Género</string>
 </resources>

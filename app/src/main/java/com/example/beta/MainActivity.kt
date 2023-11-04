@@ -16,7 +16,9 @@ import com.example.beta.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
@@ -26,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

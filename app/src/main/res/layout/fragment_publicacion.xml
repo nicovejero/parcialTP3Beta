@@ -1,9 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.PublicacionFragment">
+    android:layout_margin="15dp"
+    android:scrollbars="vertical"
+    tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/fragment_container_publicacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/simpleImageButton"
+            android:layout_width="124dp"
+            android:layout_height="108dp"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@drawable/upload_image_icon"
+            android:clickable="true" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nombrePetContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:helperText="@string/Required"
+            app:helperTextTextColor="@color/design_default_color_primary_dark"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/ETNombrePetLength">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eTNombrePet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre Pet"
+                android:maxLength="@integer/ETNombrePetLength"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Breed Dropdown Menu -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/breedDropdownContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:hint="@string/publishFr_choose_breed">
+
+            <AutoCompleteTextView
+                android:id="@+id/breedAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:editable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Sub-Breed Dropdown Menu -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/subBreedDropdownContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:hint="@string/publishFr_choose_subbreed">
+
+        <AutoCompleteTextView
+            android:id="@+id/subBreedAutoComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:editable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Age Dropdown Menu -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ageDropdownContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:hint="@string/publishFr_choose_age">
+
+            <AutoCompleteTextView
+                android:id="@+id/ageSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:editable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Gender Switch -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/publishFr_gender_label" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/genderSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textOff="@string/publishFr_gender_female"
+                android:textOn="@string/publishFr_gender_male" />
+        </LinearLayout>
+
+        <!-- Confirm Button -->
+        <Button
+            android:id="@+id/buttonConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/publishFr_confirmButton_text"/>
+
+    </LinearLayout>
+</ScrollView>
