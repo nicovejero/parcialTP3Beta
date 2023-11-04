@@ -12,4 +12,7 @@ data class BreedEntity(
     @ColumnInfo(name = "breed") val breedName: String,
 )
 
-fun Breed.toDatabase() = BreedEntity(breedName = breedName)
+fun Breed.toDatabase(): BreedEntity {
+    return BreedEntity(breedName = this.breedName)
+}
+

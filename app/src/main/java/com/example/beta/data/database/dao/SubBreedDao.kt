@@ -9,7 +9,7 @@ import com.example.beta.data.database.entities.SubBreedEntity
 @Dao
 interface SubBreedDao {
     // Existing function to get all sub-breeds for a breed
-    @Query("SELECT * FROM subbreeds WHERE breed_id = :breedId")
+    @Query("SELECT * FROM subbreeds WHERE breedId = :breedId")
     suspend fun getSubBreedsForBreed(breedId: Int): List<SubBreedEntity>
 
     // Function to insert a list of sub-breeds into the database
@@ -17,6 +17,6 @@ interface SubBreedDao {
     suspend fun insertAll(subBreeds: List<SubBreedEntity>)
 
     // Function to delete all sub-breeds for a specific breed
-    @Query("DELETE FROM subbreeds WHERE breed_id = :breedId")
+    @Query("DELETE FROM subbreeds WHERE breedId = :breedId")
     suspend fun deleteSubBreedsForBreed(breedId: Int)
 }

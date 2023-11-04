@@ -7,7 +7,7 @@ data class BreedWithSubBreeds(
     @Embedded val breed: BreedEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "breed_id"
+        entityColumn = "breedId"
     )
     val subBreeds: List<SubBreedEntity>
 )
