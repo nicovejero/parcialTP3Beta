@@ -1,10 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+
     <item
         android:id="@+id/nav_drawer_perfil"
-        android:title="Perfil" />
+        android:title="Perfil"
+        android:icon="@drawable/profile"/>
     <item
         android:id="@+id/nav_drawer_configuracion"
-        android:title="Configuración" />
+        android:title="Configuración"
+        android:icon="@drawable/filter"/>
 </menu>

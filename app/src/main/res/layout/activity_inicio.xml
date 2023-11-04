@@ -3,11 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Imagen redondeada en el centro -->
-    <!-- Crea un recurso drawable para redondear la imagen -->
-
-    <!-- Título en negrita -->
-
     <ImageView
         android:id="@+id/rounded_image"
         android:layout_width="260dp"
@@ -18,7 +13,7 @@
         android:layout_marginStart="75dp"
         android:layout_marginTop="103dp"
         android:layout_marginEnd="74dp"
-        android:src="@drawable/rounded_background" />
+        android:src="@drawable/perro_salchicha_inicio" />
 
     <TextView
         android:id="@+id/tvInicioDescription"
@@ -36,18 +31,18 @@
 
     <Button
         android:id="@+id/btnSignIn"
-        android:layout_width="230dp"
-        android:layout_height="52dp"
+        android:layout_width="220dp"
+        android:layout_height="37dp"
         android:layout_below="@id/tvInicioTitle"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="149dp"
-        android:layout_marginTop="103dp"
-        android:layout_marginEnd="155dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginBottom="123dp"
-        android:paddingHorizontal="16dp"
-        android:text="Get started"
-        android:justificationMode="inter_word"/>
+        android:textSize="15dp"
+        android:text="Get started" />
 
     <TextView
         android:id="@+id/tvInicioTitle"

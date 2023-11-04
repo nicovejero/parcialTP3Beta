@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.findNavController
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.example.beta.R
@@ -12,6 +14,7 @@ class SettingFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
     }
 
     override fun onResume() {
@@ -33,6 +36,14 @@ class SettingFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val goBackButton = findPreference<Preference>("back_key")
+        goBackButton?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            // Realiza la navegación hacia la actividad deseada aquí
+            val action = SettingFragmentDirections.actionGlobalNavDrawerPerfil()
+            view.findNavController().navigate(action)
+            true
+        }
+
         val toggleNightMode = findPreference<SwitchPreferenceCompat>("dark_mode")
         toggleNightMode?.setOnPreferenceChangeListener { _, newValue ->
             val nightMode = if (newValue as Boolean) {
@@ -45,3 +56,4 @@ class SettingFragment : PreferenceFragmentCompat() {
     }
     }
 }
+

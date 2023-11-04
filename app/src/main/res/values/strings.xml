@@ -32,5 +32,6 @@
     <string name="publishFr_choose_subbreed">Seleccioná la sub raza</string>
     <string name="publishFr_confirmButton_text">Poner en Adopción</string>
     <string name="dogs_api_base_url">https://dog.ceo/</string>
+    <string name="favoritos_text">Favoritos</string>
 
 </resources>
