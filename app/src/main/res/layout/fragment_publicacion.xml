@@ -73,14 +73,54 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:editable="false"/>
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Confirm Button -->
-    <Button
-        android:id="@+id/buttonConfirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/publishFr_confirmButton_text"/>
-</LinearLayout>
-    </ScrollView>
+        <!-- Age Dropdown Menu -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ageDropdownContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:hint="@string/publishFr_choose_age">
+
+            <AutoCompleteTextView
+                android:id="@+id/ageSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:editable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Gender Switch -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/publishFr_gender_label" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/genderSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textOff="@string/publishFr_gender_female"
+                android:textOn="@string/publishFr_gender_male" />
+        </LinearLayout>
+
+        <!-- Confirm Button -->
+        <Button
+            android:id="@+id/buttonConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/publishFr_confirmButton_text"/>
+
+    </LinearLayout>
+</ScrollView>

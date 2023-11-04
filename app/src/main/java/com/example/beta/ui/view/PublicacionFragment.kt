@@ -1,7 +1,5 @@
 package com.example.beta.ui.view
 
-// Correct import statements
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,8 +42,12 @@ class PublicacionFragment : Fragment() {
 
         // Initialize an ArrayAdapter with an empty list
         val breedsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf<String>())
+        val subBreedsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf<String>())
+
         // Assign the adapter to the AutoCompleteTextView
         binding.breedAutoComplete.setAdapter(breedsAdapter)
+        binding.subBreedAutoComplete.setAdapter(subBreedsAdapter)
+        binding.subBreedAutoComplete.showDropDown()
 
         // Observe LiveData for breeds
         viewModel.breedsLiveData.observe(viewLifecycleOwner) { breedsList ->
@@ -61,11 +63,35 @@ class PublicacionFragment : Fragment() {
             binding.breedAutoComplete.showDropDown()
         }
 
-        // Set an item click listener to handle what happens when a breed is selected
+        viewModel.subBreedsLiveData.observe(viewLifecycleOwner) { subBreedsList ->
+            subBreedsAdapter.clear()
+            if (subBreedsList.isNotEmpty()) {
+                subBreedsAdapter.addAll(subBreedsList)
+                binding.subBreedDropdownContainer.visibility = View.VISIBLE
+            } else {
+                binding.subBreedDropdownContainer.visibility = View.GONE
+            }
+            subBreedsAdapter.notifyDataSetChanged() // Notify the adapter
+        }
+
         binding.breedAutoComplete.setOnItemClickListener { adapterView, _, position, _ ->
             val selectedBreed = adapterView.getItemAtPosition(position) as String
-            // TODO: Based on the selected breed, fetch and display sub-breeds if any
+            viewModel.onBreedSelected(selectedBreed)
         }
+
+        // Set up the age spinner
+        val ages = (1..20).toList() // Replace with your age range
+        val ageAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ages.map { it.toString() })
+        binding.ageSpinner.setAdapter(ageAdapter)
+
+
+        // Set up the gender switch
+        binding.genderSwitch.setOnCheckedChangeListener { _, isChecked ->
+            // isChecked == true if the switch is in the "On" position
+            val gender = if(isChecked) "Male" else "Female"
+            // Do something with the gender value if needed
+        }
+
 
         binding.buttonConfirm.setOnClickListener {
             // Collect the data from the input fields
@@ -73,8 +99,10 @@ class PublicacionFragment : Fragment() {
             val petBreed = binding.breedAutoComplete.text.toString()
             val petSubBreed = binding.subBreedAutoComplete.text.toString()
             val urlImage = "" // TODO: get image URL from image picker/upload
-            val petAge = 5 // TODO: parse age from input
-            val petGender = true // TODO: get gender from input, probably a boolean
+            // Get the selected pet age from the spinner
+            val petAge = binding.ageSpinner.listSelection
+            // Get the selected gender from the switch
+            val petGender = binding.genderSwitch.isChecked
 
             // Create Pet object
             val pet = Pet(

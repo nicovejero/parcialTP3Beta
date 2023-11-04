@@ -1,10 +1,12 @@
 package com.example.beta.data.model
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class SubBreedModel(
-    @SerializedName("breed") val breed: String,
-    @SerializedName("subBreeds") val subBreeds: List<String>
+@Entity(tableName = "subbreeds")
+data class SubBreed(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "main_breed_name") val mainBreedName: String,
+    @ColumnInfo(name = "sub_breed_name") val subBreedName: String
 )
-
-

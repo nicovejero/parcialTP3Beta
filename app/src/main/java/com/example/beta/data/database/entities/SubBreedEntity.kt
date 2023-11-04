@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.beta.domain.model.SubBreed
 
 
 @Entity(
@@ -25,3 +26,10 @@ data class SubBreedEntity(
     val breedId: Int,
     @ColumnInfo(name = "subBreedName") val subBreedName: String
 )
+
+fun SubBreedEntity.toDomain(): SubBreed {
+    return SubBreed(
+        breedId = this.breedId,
+        subBreedName = this.subBreedName
+    )
+}
