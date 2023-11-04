@@ -13,17 +13,17 @@ class BreedRepository @Inject constructor(
     private val breedDao: BreedDao
 ) {
 
-    suspend fun getAllBreedsFromApi(): List<Breed> {
+    suspend fun getAllBreedsFromApi() : List<Breed> {
         val response: List<BreedModel> = remote.getBreeds()
         return response.map { it.toDomain() }
     }
 
-    suspend fun getAllBreedsFromDatabase():List<Breed>{
+    suspend fun getAllBreedsFromDatabase() : List<Breed>{
         val response: List<BreedEntity> = breedDao.getAllBreeds()
         return response.map { it.toDomain() }
     }
 
-    suspend fun insertBreeds(breeds:List<BreedEntity>){
+    suspend fun insertBreeds(breeds:List<BreedEntity>) {
         breedDao.insertAll(breeds)
     }
 

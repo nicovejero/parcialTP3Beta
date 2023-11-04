@@ -24,6 +24,18 @@ data class Pet(
 
     override fun describeContents() = 0
 
+    fun toMap(): Map<String, Any> {
+        return mapOf(
+            "petId" to petId,
+            "petName" to petName,
+            "petBreed" to petBreed,
+            "petSubBreed" to petSubBreed,
+            "urlImage" to urlImage,
+            "petAge" to petAge,
+            "petGender" to petGender
+        )
+    }
+
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(petId)
         writeString(petName)
