@@ -173,7 +173,9 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
-                        android:text="Call" />
+                        android:padding="11dp"
+                        android:text="Call"
+                        app:icon="@drawable/llamada" />
                 </FrameLayout>
 
                 <TextView
