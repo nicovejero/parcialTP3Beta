@@ -21,7 +21,7 @@ class AdopcionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_adopcion, container, false)
+        return inflater.inflate(R.layout.fragment_adopcion_detail, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

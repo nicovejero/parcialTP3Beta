@@ -33,9 +33,9 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="30dp"
             android:text="Nombre"
-            android:textSize="20dp"
             android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvCardEdad"
@@ -44,9 +44,9 @@
             android:layout_marginStart="140dp"
             android:layout_marginTop="110dp"
             android:text="Edad / "
-            android:textSize="13dp"
             android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:textSize="13dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvCardGenero"
@@ -55,12 +55,12 @@
             android:layout_marginStart="180dp"
             android:layout_marginTop="110dp"
             android:text=" Macho o Hembra"
-            android:textSize="13dp"
             android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:textSize="13dp"
+            android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageView2"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="250dp"
@@ -91,9 +91,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Raza"
-                    android:textSize="15dp"
                     android:textColor="@color/white"
-                    android:textStyle="bold"/>
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -113,9 +113,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SubRaza"
-                    android:textSize="15dp"
                     android:textColor="@color/white"
-                    android:textStyle="bold"/>
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
