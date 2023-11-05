@@ -1,9 +1,11 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Agrega una Preferencia de Retroceso -->
+
+
     <Preference
         app:title="atras"
-        app:key="back_key" />
+        app:key="back_key"
+        app:icon="@drawable/arrow_go_backsvg"/>
 
     <!-- Agrega una Preferencia de Título -->
     <PreferenceCategory app:title="Generales" />
