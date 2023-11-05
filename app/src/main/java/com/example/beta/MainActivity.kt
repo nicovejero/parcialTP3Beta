@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var navController: NavController
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
