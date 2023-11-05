@@ -9,8 +9,11 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.example.beta.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingFragment : PreferenceFragmentCompat() {
+
+    private lateinit var bottomNavView: BottomNavigationView
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -39,7 +42,7 @@ class SettingFragment : PreferenceFragmentCompat() {
         val goBackButton = findPreference<Preference>("back_key")
         goBackButton?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             // Realiza la navegación hacia la actividad deseada aquí
-            val action = SettingFragmentDirections.actionGlobalNavDrawerPerfil()
+            val action = SettingFragmentDirections.actionGlobalNavGoBack()
             view.findNavController().navigate(action)
             true
         }
