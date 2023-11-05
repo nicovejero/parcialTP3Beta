@@ -6,7 +6,9 @@ import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.beta.data.database.entities.User
@@ -22,6 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class InicioActivity : AppCompatActivity() {
 
+
+    private lateinit var signInResultLauncher: ActivityResultLauncher<IntentSenderRequest>
+
     private lateinit var binding: ActivityInicioBinding
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var oneTapClient: SignInClient
@@ -32,6 +37,11 @@ class InicioActivity : AppCompatActivity() {
         binding = ActivityInicioBinding.inflate(layoutInflater)
         setContentView(binding.root)
         oneTapClient = Identity.getSignInClient(this)
+        signInResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                handleSignInResult(result.data)
+            }
+        }
         initializeSignInRequest()
         // Check if the user is already signed in
         val currentUser = firebaseAuth.currentUser
@@ -71,23 +81,15 @@ class InicioActivity : AppCompatActivity() {
         oneTapClient.beginSignIn(signUpRequest)
             .addOnSuccessListener(this) { result ->
                 try {
-                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
-                    startIntentSenderForResult(
-                        intentSenderRequest.intentSender,
-                        RC_SIGN_IN,
-                        null,
-                        0,
-                        0,
-                        0,
-                        null
-                    )
+                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent.intentSender)
+                        .build()
+                    signInResultLauncher.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
                     Log.e("TAG", "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            .addOnFailureListener(this) { e ->
+            .addOnFailureListener(this) { _ ->
                 showNoGoogleAccountInDeviceWarning()
-                Log.d("TAG", e.localizedMessage)
             }
     }
 
@@ -103,8 +105,8 @@ class InicioActivity : AppCompatActivity() {
     private fun handleSignInResult(data: Intent?) {
         try {
             val credential = oneTapClient.getSignInCredentialFromIntent(data)
-            val userAuth = GoogleAuthProvider.getCredential(credential?.googleIdToken, null)
-            val idToken = credential?.googleIdToken
+            val userAuth = GoogleAuthProvider.getCredential(credential.googleIdToken, null)
+            val idToken = credential.googleIdToken
             if (idToken != null) {
                 val email = credential.id
                 Toast.makeText(applicationContext, "token: $email", Toast.LENGTH_SHORT).show()

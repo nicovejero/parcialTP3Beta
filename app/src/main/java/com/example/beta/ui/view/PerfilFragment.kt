@@ -20,11 +20,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class PerfilFragment : Fragment() {
-
     private lateinit var binding: FragmentPerfilBinding
     private val db = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid!!
-    val userRef = db.collection("users").document(uid)
+    private val userRef = db.collection("users").document(uid)
+
     private val mGoogleSignInClient: GoogleSignInClient by lazy {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
@@ -60,10 +60,6 @@ class PerfilFragment : Fragment() {
         binding = FragmentPerfilBinding.inflate(inflater, container, false)
         val view = binding.root
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
-
-
-
-
 
         btnLogout.setOnClickListener {
             mGoogleSignInClient.signOut().addOnCompleteListener {

@@ -1,18 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/bottom_home"
+        android:id="@+id/HomeFragment"
         android:title="Home"
         android:icon="@drawable/casa"/>
     <item
-        android:id="@+id/bottom_favoritos"
+        android:id="@+id/favoritos_fragment"
         android:title="Favoritos"
         android:icon="@drawable/libro"/>
     <item
-        android:id="@+id/bottom_adopcion"
+        android:id="@+id/adopcion_fragment"
         android:title="Adopción"
         android:icon="@drawable/conversacion"/>
     <item
-        android:id="@+id/bottom_publicacion"
+        android:id="@+id/publicacion_fragment"
         android:title="Publicación"
         android:icon="@drawable/perro"/>
 </menu>

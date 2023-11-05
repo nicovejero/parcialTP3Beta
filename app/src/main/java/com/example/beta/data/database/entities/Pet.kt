@@ -12,17 +12,21 @@ data class Pet(
     val petAge: Int = 0,
     val petGender: Boolean
 ) : Parcelable {
-    constructor(source: Parcel) : this(
-        source.readString() ?: "",
-        source.readString() ?: "",
-        source.readString() ?: "",
-        source.readString() ?: "",
-        source.readString() ?: "",
-        source.readInt() ?: 0,
-        source.readBoolean() ?: false
+    constructor(parcel: Parcel) : this(
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readInt(),
+        parcel.readBoolean()
     )
 
-    override fun describeContents() = 0
+    constructor() : this("", "", "", "", "", 0, false)
+
+    override fun describeContents(): Int {
+        return 0
+    }
 
     fun toMap(): Map<String, Any> {
         return mapOf(
@@ -49,8 +53,13 @@ data class Pet(
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<Pet> = object : Parcelable.Creator<Pet> {
-            override fun createFromParcel(source: Parcel): Pet = Pet(source)
-            override fun newArray(size: Int): Array<Pet?> = arrayOfNulls(size)
+            override fun createFromParcel(parcel: Parcel): Pet {
+                return Pet(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Pet?> {
+                return arrayOfNulls(size)
+            }
         }
     }
 }

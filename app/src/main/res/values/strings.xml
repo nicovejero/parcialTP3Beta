@@ -37,4 +37,6 @@
     <string name="publishFr_gender_male">Macho</string>
     <string name="publishFr_choose_age">Seleccioná la Edad</string>
     <string name="publishFr_gender_label">Seleccioná el Género</string>
+    <string name="filter_chip_text">Breed</string>
+    <string name="home_mas_filtros">Mas Filtros</string>
 </resources>

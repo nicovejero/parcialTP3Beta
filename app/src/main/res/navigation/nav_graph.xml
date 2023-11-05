@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/bottom_home">
+    app:startDestination="@id/HomeFragment">
     <action
         android:id="@+id/action_global_nav_drawer_perfil"
         app:destination="@id/nav_drawer_perfil"
@@ -24,20 +25,36 @@
 
     <!-- Fragmentos para Bottom Navigation Menu -->
         <fragment
-            android:id="@+id/bottom_home"
+            android:id="@+id/HomeFragment"
             android:name="com.example.beta.ui.view.HomeFragment"
-            android:label="Home" />
+            android:label="Home" >
+            <action
+                android:id="@+id/action_homeFragment_to_petInAdoptionDetailFragment"
+                app:destination="@id/petInAdoptionDetailFragment" />
+        </fragment>
         <fragment
-            android:id="@+id/bottom_favoritos"
+            android:id="@+id/favoritos_fragment"
             android:name="com.example.beta.ui.view.FavoritosFragment"
-            android:label="Favoritos" />
+            android:label="Favoritos" >
+            <action
+                android:id="@+id/action_favoritosFragment_to_petInAdoptionDetailFragment"
+                app:destination="@id/petInAdoptionDetailFragment" />
+        </fragment>
         <fragment
-            android:id="@+id/bottom_adopcion"
+            android:id="@+id/adopcion_fragment"
             android:name="com.example.beta.ui.view.AdopcionFragment"
             android:label="Adopción" />
         <fragment
-            android:id="@+id/bottom_publicacion"
+            android:id="@+id/publicacion_fragment"
             android:name="com.example.beta.ui.view.PublicacionFragment"
             android:label="Publicación" />
+    <fragment
+        android:id="@+id/petInAdoptionDetailFragment"
+        android:name="com.example.beta.ui.view.PetInAdoptionDetailFragment"
+        android:label="fragment_pet_in_adoption_detail"
+        tools:layout="@layout/fragment_pet_in_adoption_detail" >
+        <argument android:name="pet"
+            app:argType="com.example.beta.data.database.entities.Pet"/>
+    </fragment>
 
 </navigation>
