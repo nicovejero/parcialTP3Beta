@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.beta.R
-import com.example.beta.databinding.FragmentAdopcionBinding
+import com.example.beta.databinding.FragmentAdopcionDetailBinding
 import com.example.beta.ui.viewmodel.AdopcionViewModel
 
 
@@ -21,12 +21,15 @@ class AdopcionFragment : Fragment() {
     }
 
     private lateinit var viewModel: AdopcionViewModel
-    private lateinit var binding : FragmentAdopcionBinding
+    private lateinit var binding : FragmentAdopcionDetailBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAdopcionBinding.inflate(layoutInflater, container, false)
+
+        return inflater.inflate(R.layout.fragment_adopcion_detail, container, false)
+
+        binding = FragmentAdopcionDetailBinding.inflate(layoutInflater, container, false)
         binding.callButton.setOnClickListener{
             // Phone number you want to call
             val phoneNumber = "123456789" // Replace with the number you want to call
@@ -39,6 +42,7 @@ class AdopcionFragment : Fragment() {
             startActivity(intent)
         }
         return binding.root
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
