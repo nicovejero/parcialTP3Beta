@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.beta.R
 import com.example.beta.databinding.FragmentAdopcionDetailBinding
+import com.example.beta.databinding.FragmentDetailBinding
 import com.example.beta.ui.viewmodel.AdopcionViewModel
 
 
@@ -26,9 +27,6 @@ class AdopcionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_adopcion_detail, container, false)
-
         binding = FragmentAdopcionDetailBinding.inflate(layoutInflater, container, false)
         binding.callButton.setOnClickListener{
             // Phone number you want to call
