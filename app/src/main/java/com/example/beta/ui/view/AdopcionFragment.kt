@@ -1,13 +1,18 @@
 package com.example.beta.ui.view
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.beta.R
+import com.example.beta.databinding.FragmentAdopcionBinding
 import com.example.beta.ui.viewmodel.AdopcionViewModel
+
 
 class AdopcionFragment : Fragment() {
 
@@ -16,12 +21,24 @@ class AdopcionFragment : Fragment() {
     }
 
     private lateinit var viewModel: AdopcionViewModel
-
+    private lateinit var binding : FragmentAdopcionBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_adopcion, container, false)
+        binding = FragmentAdopcionBinding.inflate(layoutInflater, container, false)
+        binding.callButton.setOnClickListener{
+            // Phone number you want to call
+            val phoneNumber = "123456789" // Replace with the number you want to call
+
+            // Create an Intent to initiate the call
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tel:$phoneNumber"))
+            Toast.makeText(requireActivity(), "tel:$phoneNumber", Toast.LENGTH_SHORT).show()
+
+            // Start the dialer activity
+            startActivity(intent)
+        }
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

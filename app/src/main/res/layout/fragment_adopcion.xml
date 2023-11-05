@@ -169,7 +169,7 @@
                     android:layout_marginLeft="310dp">
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/callButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
