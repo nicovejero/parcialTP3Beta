@@ -1,18 +1,12 @@
 package com.example.beta.ui.view
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.beta.R
-import com.example.beta.databinding.FragmentAdopcionDetailBinding
 import com.example.beta.databinding.FragmentAdopcionesListBinding
-import com.example.beta.databinding.FragmentDetailBinding
 import com.example.beta.ui.viewmodel.AdopcionViewModel
 
 
