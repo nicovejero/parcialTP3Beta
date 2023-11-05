@@ -34,6 +34,7 @@
     <string name="publishFr_confirmButton_text">Poner en Adopción</string>
     <string name="dogs_api_base_url">https://dog.ceo/</string>
     <string name="favoritos_text">Favoritos</string>
+    <string name="adopciones_text">Adopciones</string>
     <string name="publishFr_gender_female">Hembra</string>
     <string name="publishFr_gender_male">Macho</string>
     <string name="publishFr_choose_age">Seleccioná la Edad</string>
