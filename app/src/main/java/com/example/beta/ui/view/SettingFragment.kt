@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
+import com.example.beta.MainActivity
 import com.example.beta.R
 
 class SettingFragment : PreferenceFragmentCompat() {
@@ -35,12 +36,18 @@ class SettingFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val navController = view.findNavController()
+        val action = SettingFragmentDirections.actionGlobalNavDrawerGoBack()
 
         val goBackButton = findPreference<Preference>("back_key")
         goBackButton?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            // Realiza la navegación hacia la actividad deseada aquí
-            val action = SettingFragmentDirections.actionGlobalNavDrawerPerfil()
-            view.findNavController().navigate(action)
+            navController.popBackStack(R.id.nav_graph, false)
+
+            if (activity is MainActivity) {
+                (activity as MainActivity).setBottomNavViewVisibility(View.VISIBLE)
+            }
+
+            navController.navigate(action)
             true
         }
 
