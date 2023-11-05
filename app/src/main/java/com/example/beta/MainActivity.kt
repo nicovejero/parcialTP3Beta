@@ -1,6 +1,7 @@
 package com.example.beta
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -91,6 +92,7 @@ class MainActivity : AppCompatActivity() {
 
                     bottomNavView.visibility = View.GONE
                     navController.navigate(R.id.action_global_nav_drawer_perfil)
+                    supportActionBar?.hide()
                     Toast.makeText(this, "Item 1 selected in Drawer Menu", Toast.LENGTH_SHORT).show()
                 }
                 R.id.nav_drawer_configuracion -> {
@@ -106,6 +108,18 @@ class MainActivity : AppCompatActivity() {
             }
             drawerLayout.closeDrawers()
             true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                // Acción cuando se presiona el botón de retroceso
+                onBackPressed()
+                return true
+            }
+            // Otros elementos de menú aquí...
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

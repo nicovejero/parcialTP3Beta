@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.beta.InicioActivity
+import com.example.beta.MainActivity
 import com.example.beta.R
 import com.example.beta.data.database.entities.User
 import com.example.beta.databinding.FragmentPerfilBinding
@@ -57,12 +59,9 @@ class PerfilFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPerfilBinding.inflate(inflater, container, false)
+        binding = FragmentPerfilBinding.inflate(layoutInflater, container, false)
         val view = binding.root
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
-
-
-
 
 
         btnLogout.setOnClickListener {
@@ -74,6 +73,28 @@ class PerfilFragment : Fragment() {
             }
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val navController = view?.findNavController()
+        val action = SettingFragmentDirections.actionGlobalNavDrawerGoBack()
+
+
+        binding.goBackImage.setOnClickListener{
+
+            if (navController != null) {
+                navController.popBackStack(R.id.nav_graph, false)
+            }
+
+            if (activity is MainActivity) {
+                (activity as MainActivity).setBottomNavViewVisibility(View.VISIBLE)
+                (activity as MainActivity).supportActionBar?.show()
+            }
+
+            navController?.navigate(action)
+            true
+        }
+        super.onViewCreated(view, savedInstanceState)
     }
 
 }
