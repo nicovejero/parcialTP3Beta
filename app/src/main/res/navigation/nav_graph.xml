@@ -13,6 +13,11 @@
         app:destination="@id/nav_drawer_configuracion"
         app:launchSingleTop="true" />
 
+    <action
+        android:id="@+id/action_global_nav_drawer_go_back"
+        app:destination="@id/nav_graph"
+        app:launchSingleTop="true" />
+
     <!-- Fragmentos para Drawer Menu -->
         <fragment
             android:id="@+id/nav_drawer_perfil"
