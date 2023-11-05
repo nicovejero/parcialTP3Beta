@@ -109,6 +109,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun setBottomNavViewVisibility(visibility: Int) {
+        if (bottomNavView != null) {
+            bottomNavView.setVisibility(visibility)
+        }
+    }
+
     override fun onSupportNavigateUp(): Boolean {
 
     //    return NavigationUI.navigateUp(navController, drawerLayout) || super.onSupportNavigateUp()

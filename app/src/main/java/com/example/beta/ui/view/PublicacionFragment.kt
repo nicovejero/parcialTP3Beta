@@ -119,13 +119,14 @@ class PublicacionFragment : Fragment() {
             viewModel.addPet(pet) { result ->
                 when (result) {
                     is Result.Success -> {
-                        // Handle success, e.g., by showing a success message and/or navigating back
+                        Toast.makeText(requireContext(), "Mascota puesta en adopción", Toast.LENGTH_SHORT).show()
                     }
                     is Result.Error -> {
                         // Handle error, e.g., by showing an error message to the user
                     }
                 }
             }
+
         }
     }
 
