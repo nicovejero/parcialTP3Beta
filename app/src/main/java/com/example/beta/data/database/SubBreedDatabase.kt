@@ -6,7 +6,7 @@ import com.example.beta.data.database.dao.SubBreedDao
 import com.example.beta.data.database.entities.SubBreedEntity
 import com.example.beta.data.database.entities.BreedEntity
 
-@Database(entities = [BreedEntity::class, SubBreedEntity::class], version = 1, exportSchema = true)
+@Database(entities = [BreedEntity::class, SubBreedEntity::class], version = 1, exportSchema = false)
 abstract class SubBreedDatabase: RoomDatabase() {
 
     abstract fun getSubBreedDao():SubBreedDao

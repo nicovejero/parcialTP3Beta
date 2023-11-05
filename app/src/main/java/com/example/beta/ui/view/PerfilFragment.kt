@@ -34,7 +34,8 @@ class PerfilFragment : Fragment() {
     private lateinit var binding: FragmentPerfilBinding
     private val db = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid!!
-    val userRef = db.collection("users").document(uid)
+    private val userRef = db.collection("users").document(uid)
+
     private val mGoogleSignInClient: GoogleSignInClient by lazy {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))

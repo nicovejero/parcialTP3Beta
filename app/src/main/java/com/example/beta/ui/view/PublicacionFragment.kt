@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.beta.data.database.entities.Pet
 import com.example.beta.databinding.FragmentPublicacionBinding
@@ -84,12 +85,12 @@ class PublicacionFragment : Fragment() {
         val ageAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ages.map { it.toString() })
         binding.ageSpinner.setAdapter(ageAdapter)
 
-
         // Set up the gender switch
         binding.genderSwitch.setOnCheckedChangeListener { _, isChecked ->
             // isChecked == true if the switch is in the "On" position
-            val gender = if(isChecked) "Male" else "Female"
-            // Do something with the gender value if needed
+            val petGender = if(isChecked) "Male" else "Female"
+            Toast.makeText(requireContext(), "gender: $petGender", Toast.LENGTH_SHORT).show()
+            // Do something with the gender value if neede
         }
 
 
@@ -123,7 +124,6 @@ class PublicacionFragment : Fragment() {
                     is Result.Error -> {
                         // Handle error, e.g., by showing an error message to the user
                     }
-                    else -> {}
                 }
             }
         }
