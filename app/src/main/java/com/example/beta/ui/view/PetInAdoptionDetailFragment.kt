@@ -1,6 +1,7 @@
 package com.example.beta.ui.view
 
 import android.app.ActivityOptions
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.beta.ImageViewActivity
 import com.example.beta.R
 import com.example.beta.data.database.entities.Pet
-import com.example.beta.data.database.entities.User
 import com.example.beta.databinding.FragmentAdopcionDetailCarouselBinding
 import com.example.beta.ui.holder.ImageAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -25,14 +25,29 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class PetInAdoptionDetailFragment : Fragment() {
     private val args: PetInAdoptionDetailFragmentArgs by navArgs()
+
+    //private lateinit var binding: FragmentAdopcionDetailBinding
     private lateinit var binding: FragmentAdopcionDetailCarouselBinding
-    private val pet: Pet by lazy { args.pet }
+    private val pet: Pet by lazy { args.pet } // Use lazy initialization
+    private val uid: String? by lazy { FirebaseAuth.getInstance().currentUser?.uid }
     private val db = FirebaseFirestore.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAdopcionDetailCarouselBinding.inflate(inflater, container, false)
+        binding.petDetailCallButton.setOnClickListener {
+            // Phone number you want to call
+            val phoneNumber = "123456789" // Replace with the number you want to call
+
+            // Create an Intent to initiate the call
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tel:$phoneNumber"))
+            Toast.makeText(requireActivity(), "tel:$phoneNumber", Toast.LENGTH_SHORT).show()
+            // Start the dialer activity
+            startActivity(intent)
+        }
+
         val recyclerView: RecyclerView = binding.petDetailPicture
         val arrayList = ArrayList<String>()
 
@@ -50,20 +65,20 @@ class PetInAdoptionDetailFragment : Fragment() {
 
         recyclerView.adapter = adapter
 
-
-        binding.petDetailAdoptButton.setOnClickListener {
-            adoptarPet()
-        }
-/*
         adapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
             override fun onClick(imageView: ImageView, path: String) {
-                val intent = Intent(requireActivity(), ImageViewActivity::class.java)
-                intent.putExtra("image", path)
-                val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(), imageView, "image").toBundle()
-                startActivity(intent, options)
+                // Create and show a dialog with the image
+                val dialog = Dialog(requireContext())
+                dialog.setContentView(R.layout.image_dialog)
+                val fullSizeImage: ImageView = dialog.findViewById(R.id.dialog_imageview)
+                // Assuming you're using Glide or a similar library to load images
+                Glide.with(this@PetInAdoptionDetailFragment)
+                    .load(path)
+                    .into(fullSizeImage)
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
             }
         })
-*/
 
 
         val petName: TextView = binding.petDetailName
@@ -90,18 +105,20 @@ class PetInAdoptionDetailFragment : Fragment() {
 
 
         /*callOwnerButton.setOnClickListener{
-            // Phone number you want to call
-            val phoneNumber = "123456789" // Replace with the number you want to call
+        // Phone number you want to call
+        val phoneNumber = "123456789" // Replace with the number you want to call
 
-            // Create an Intent to initiate the call
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tel:$phoneNumber"))
-            Toast.makeText(requireActivity(), "tel:$phoneNumber", Toast.LENGTH_SHORT).show()
+        // Create an Intent to initiate the call
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tel:$phoneNumber"))
+        Toast.makeText(requireActivity(), "tel:$phoneNumber", Toast.LENGTH_SHORT).show()
 
-            // Start the dialer activity
-            startActivity(intent)
-        }
+        // Start the dialer activity
+        startActivity(intent)
+    }
 
-
+    adoptarButton.setOnClickListener {
+        adoptarPet()
+    }
 */
         return binding.root
     }
