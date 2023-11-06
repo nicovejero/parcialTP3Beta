@@ -1,13 +1,20 @@
 package com.example.beta.ui.view
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.example.beta.R
 import com.example.beta.data.database.entities.Pet
 import com.example.beta.databinding.FragmentPublicacionBinding
 import com.example.beta.ui.viewmodel.PublicacionViewModel
@@ -23,6 +30,7 @@ class PublicacionFragment : Fragment() {
 
     companion object {
         fun newInstance() = PublicacionFragment()
+         private const val PICK_IMAGE_REQUEST = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +43,55 @@ class PublicacionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPublicacionBinding.inflate(inflater, container, false)
+
+        binding.simpleImageButton1.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+
+        }
+        binding.simpleImageButton2.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+        }
+        binding.simpleImageButton3.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+        }
+        binding.simpleImageButton4.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+        }
+        binding.simpleImageButton5.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+        }
         return binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PublicacionFragment.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            // Get the image URI from the result
+            val imageUri = data?.data
+            imageUri?.let {
+                //uploadImageToFirebaseStorage(it)
+                guardarImagen(it)
+
+            }
+        }
+    }
+
+    private fun guardarImagen(it: Uri) {
+        val imageButton = view?.findViewById<ImageView>(R.id.profile_image)
+        if (imageButton != null) {
+            Glide.with(this).load(it).circleCrop().into(imageButton)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
