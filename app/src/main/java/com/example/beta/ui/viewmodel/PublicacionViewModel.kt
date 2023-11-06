@@ -25,8 +25,8 @@ class PublicacionViewModel @Inject constructor(
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
     val breedsLiveData = MutableLiveData<List<Breed>>()
     val isLoading = MutableLiveData<Boolean>()
-
-
+    private val _resetFields = MutableLiveData<Boolean?>().apply { value = false } // default to false
+    val resetFields: LiveData<Boolean?> = _resetFields
 
     private val _subBreedsLiveData = MutableLiveData<List<String>>()
     val subBreedsLiveData: LiveData<List<String>> = _subBreedsLiveData
@@ -59,21 +59,35 @@ class PublicacionViewModel @Inject constructor(
         }
     }
 
-    fun addPet(pet: Pet, onComplete: (Result<String>) -> Unit) {
-        if (userId != null){
-        db.collection("pets")
-            .add(pet.toMap()) // Make sure Pet has a method toMap() that converts it to a Map
-            .addOnSuccessListener { documentReference ->
-                val petId = documentReference.id
-                pet.petOwner = userId
-                pet.petId = petId
-                db.collection("pets").document(petId)
-                    .set(pet)
-            }
-            .addOnFailureListener { e ->
-                onComplete(Result.Error(e)) // Assuming Result.Error is a custom class you've defined
-            }
-        return onComplete(Result.Success("Pet added successfully"))
+    fun addPet(pet: Pet) {
+        if (userId != null) {
+            isLoading.postValue(true)
+            db.collection("pets")
+                .add(pet.toMap()) // Ensure Pet has a toMap() method
+                .addOnSuccessListener { documentReference ->
+                    val petId = documentReference.id
+                    pet.petOwner = userId
+                    pet.petId = petId
+                    db.collection("pets").document(petId)
+                        .set(pet)
+                        .addOnSuccessListener {
+                            isLoading.postValue(false)
+                            _resetFields.postValue(true) // Signal that fields should be reset
+                        }
+                        .addOnFailureListener { e ->
+                            isLoading.postValue(false)
+                            _resetFields.postValue(false)
+                            // Handle failure
+                        }
+                }
+                .addOnFailureListener { e ->
+                    isLoading.postValue(false)
+                    // Handle failure
+                }
         }
+    }
+
+    fun onFieldsResetComplete() {
+        _resetFields.value = false
     }
 }
