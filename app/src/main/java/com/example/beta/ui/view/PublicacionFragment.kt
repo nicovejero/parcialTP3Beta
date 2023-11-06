@@ -25,6 +25,7 @@ class PublicacionFragment : Fragment() {
     private var _binding: FragmentPublicacionBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PublicacionViewModel by viewModels()
+    private var  selectedImageViewId : Int = 0
 
     companion object {
         fun newInstance() = PublicacionFragment()
@@ -43,32 +44,28 @@ class PublicacionFragment : Fragment() {
         _binding = FragmentPublicacionBinding.inflate(inflater, container, false)
 
         binding.simpleImageButton1.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
-
+            startImagePicker(R.id.simpleImageButton1)
         }
         binding.simpleImageButton2.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+            startImagePicker(R.id.simpleImageButton2)
         }
         binding.simpleImageButton3.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+            startImagePicker(R.id.simpleImageButton3)
         }
         binding.simpleImageButton4.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+            startImagePicker(R.id.simpleImageButton4)
         }
         binding.simpleImageButton5.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+            startImagePicker(R.id.simpleImageButton5)
         }
         return binding.root
+    }
+
+    private fun startImagePicker(imageViewId : Int){
+        selectedImageViewId = imageViewId
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -86,7 +83,7 @@ class PublicacionFragment : Fragment() {
     }
 
     private fun guardarImagen(it: Uri) {
-        val imageButton = view?.findViewById<ImageView>(R.id.profile_image)
+        val imageButton = view?.findViewById<ImageView>(selectedImageViewId)
         if (imageButton != null) {
             Glide.with(this).load(it).circleCrop().into(imageButton)
         }
