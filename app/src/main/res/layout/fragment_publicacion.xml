@@ -39,7 +39,7 @@
                 android:id="@+id/eTNombrePet"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:hint="Nombre Pet"
+                android:hint="@string/publishFr_pet_name"
                 android:maxLength="@integer/ETNombrePetLength" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,22 +49,28 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="16dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:text="@string/publishFr_gender_label" />
+                android:layout_marginEnd="0dp"
+                android:text="@string/publishFr_gender_female_label" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/genderSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="0dp"
                 android:textOff="@string/publishFr_gender_female"
                 android:textOn="@string/publishFr_gender_male" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:text="@string/publishFr_gender_male_label" />
         </LinearLayout>
 
         <!-- Breed Dropdown Menu -->
@@ -80,7 +86,6 @@
                 android:id="@+id/breedAutoComplete"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:editable="false"
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +102,6 @@
                 android:id="@+id/subBreedAutoComplete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:editable="false"
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,28 +118,22 @@
                 android:id="@+id/ageSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:editable="false"
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
+        <!-- Weight Input -->
+        <EditText
             android:id="@+id/pesoDropdownContainer"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="@string/publishFr_choose_peso">
+            android:hint="@string/publishFr_complete_peso"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/text_size_medium"
+            />
 
-            <AutoCompleteTextView
-                android:id="@+id/breedPesoAutoComplete"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:editable="false"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Confirm Button -->
+       <!-- Confirm Button -->
         <Button
             android:id="@+id/buttonConfirm"
             android:layout_width="match_parent"
