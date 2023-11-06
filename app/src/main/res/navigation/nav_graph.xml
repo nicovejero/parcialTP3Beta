@@ -15,9 +15,8 @@
         app:launchSingleTop="true" />
 
     <action
-        android:id="@+id/action_global_nav_drawer_go_back"
-        app:destination="@id/nav_graph"
-        app:launchSingleTop="true" />
+        android:id="@+id/action_global_to_adopcionFragment"
+        app:destination="@id/adopcion_fragment" />
 
     <!-- Fragmentos para Drawer Menu -->
         <fragment

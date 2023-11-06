@@ -13,7 +13,8 @@ data class PetModel(
     val petWeight: Double = 0.0,
     val petGender: Boolean = false,
     var petOwner: String = "",
-    var petLocation: String = ""
+    var petLocation: String = "",
+    val petAdopted: Boolean = false,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -25,7 +26,8 @@ data class PetModel(
         parcel.readDouble(),
         parcel.readByte() != 0.toByte(),
         parcel.readString() ?: "",
-        parcel.readString() ?: ""
+        parcel.readString() ?: "",
+        parcel.readByte() != 0.toByte()
     )
 
     constructor() : this("", "", "", "", emptyList(), 0, 0.0, false, "", "")
@@ -45,11 +47,12 @@ data class PetModel(
             "petWeight" to petWeight,
             "petGender" to petGender,
             "petOwner" to petOwner,
-            "petLocation" to petLocation
+            "petLocation" to petLocation,
+            "petAdopted" to petAdopted
         )
     }
 
-    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+    override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel) {
         writeString(petId)
         writeString(petName)
         writeString(petBreed)
@@ -60,6 +63,7 @@ data class PetModel(
         writeBoolean(petGender)
         writeString(petOwner)
         writeString(petLocation)
+        writeBoolean(petAdopted)
     }
 
     companion object {

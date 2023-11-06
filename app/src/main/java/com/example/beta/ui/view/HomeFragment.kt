@@ -18,6 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.beta.databinding.FragmentHomeBinding
+import com.google.firebase.firestore.FieldPath
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -36,7 +37,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater,container, false)
-        val query = db.collection("pets")
+        val query = db.collection("pets").whereEqualTo("adopted", false)
         recyclerViewAdoption = binding.cardsRecyclerView
         recyclerViewFilter = binding.chipsRecyclerView
 
