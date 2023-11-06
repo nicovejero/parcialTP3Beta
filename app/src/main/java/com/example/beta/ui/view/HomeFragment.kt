@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.beta.R
 import com.example.beta.data.database.adapter.FilterChipAdapter
 import com.example.beta.data.database.adapter.PetAdoptableFirestoreAdapter
 import com.example.beta.data.database.entities.Pet

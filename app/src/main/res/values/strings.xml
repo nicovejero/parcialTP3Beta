@@ -28,8 +28,9 @@
     <!-- Publicaciones -->
     <string name="Required">Campo Requerido</string>
     <string name="eTDireccion_hint" translatable="false">Dirección</string>
+    <string name="publishFr_pet_name">Nombre Pet</string>
     <string name="publishFr_choose_breed">Seleccioná la Raza</string>
-    <string name="publishFr_choose_peso">Seleccioná el Peso</string>
+    <string name="publishFr_complete_peso">Completa el Peso</string>
     <string name="publishFr_choose_subbreed">Seleccioná la sub raza</string>
     <string name="publishFr_confirmButton_text">Poner en Adopción</string>
     <string name="dogs_api_base_url">https://dog.ceo/</string>
@@ -38,8 +39,9 @@
     <string name="publishFr_gender_female">Hembra</string>
     <string name="publishFr_gender_male">Macho</string>
     <string name="publishFr_choose_age">Seleccioná la Edad</string>
+    <string name="publishFr_gender_male_label">Macho</string>
+    <string name="publishFr_gender_female_label">Hembra</string>
+    <string name="publishFr_owner_name">Nombre del Dueño</string>
     <string name="filter_chip_text">Breed</string>
     <string name="home_mas_filtros">Mas Filtros</string>
-    <string name="publishFr_gender_label">Seleccioná el Género: macho/hembra</string>
-    <string name="publishFr_owner_name">Nombre del Dueño</string>
 </resources>
