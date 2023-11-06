@@ -1,5 +1,6 @@
 package com.example.beta.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -95,23 +96,25 @@ class PublicacionViewModel @Inject constructor(
                 .add(petModel.toMap()) // Ensure Pet has a toMap() method
                 .addOnSuccessListener { documentReference ->
                     val petId = documentReference.id
+                    Log.d("Firestore", "Document added with ID: $petId")
+
                     petModel.petOwner = userId
                     petModel.petId = petId
-                    // No need to set the creationTimestamp again since it's already set
+                    Log.d("Firestore", "petModel updated with petId: ${petModel.petId}")
+
                     db.collection("pets").document(petId)
-                        .set(petModel.toMap()) // Make sure toMap includes the timestamp
+                        .set(petModel.toMap())
                         .addOnSuccessListener {
-                            isLoading.postValue(false)
-                            _resetFields.postValue(true) // Signal that fields should be reset
+                            Log.d("Firestore", "Document with ID: $petId updated successfully")
+                            // Further success handling
                         }
                         .addOnFailureListener { e ->
-                            isLoading.postValue(false)
-                            _resetFields.postValue(false)
+                            Log.w("Firestore", "Error updating document", e)
                             // Handle failure
                         }
                 }
                 .addOnFailureListener { e ->
-                    isLoading.postValue(false)
+                    Log.w("Firestore", "Error adding document", e)
                     // Handle failure
                 }
         }

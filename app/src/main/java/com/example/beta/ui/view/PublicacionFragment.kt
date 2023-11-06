@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentPublicacionBinding
 import com.example.beta.domain.model.Breed
 import com.example.beta.ui.viewmodel.PublicacionViewModel
@@ -94,7 +95,7 @@ class PublicacionFragment : Fragment() {
             breedAutoComplete.setText("", false)
             subBreedAutoComplete.setText("", false)
             publicacionDescriptionInput.text = null
-            ageSpinner.clearListSelection()
+            ageSpinner.selectAll()
             locationsSpinner.clearListSelection()
             pesoDropdownContainer.text = null
             publicacionPhoneInput.text = null
@@ -168,6 +169,12 @@ class PublicacionFragment : Fragment() {
         binding.subBreedAutoComplete.setAdapter(
             ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line)
         )
+        val ages = (1..20).toList() // Replace with your age range
+        val locations = listOf("CABA", "GBA", "Cordoba", "Rosario", "Mendoza", "Salta", "Tucuman", "Neuquen", "Mar del Plata", "La Plata", "Santa Fe", "San Juan", "San Luis", "Entre Rios", "Corrientes", "Misiones", "Chaco", "Formosa", "Jujuy", "La Rioja", "Santiago del Estero", "Catamarca", "Chubut", "Tierra del Fuego", "Santa Cruz").toList()
+        val ageAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ages.map { it.toString() })
+        val locationsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, locations.map { it.toString() })
+        binding.locationsSpinner.setAdapter(locationsAdapter)
+        binding.ageSpinner.setAdapter(ageAdapter)
         // Initialize other adapters here
     }
 
@@ -181,15 +188,45 @@ class PublicacionFragment : Fragment() {
     private fun PublicacionViewModel.setupButtonListeners() {
         binding.confirmAdoptionButton.setOnClickListener {
             generatePetInfo()?.let { petInfo ->
-                // TODO: Implement database operation to add pet info
+                addPet(petInfo)
             }
         }
     }
 
-    private fun generatePetInfo(): Map<String, Any>? {
-        // TODO: Implement the logic to generate pet info
-        return null
+
+
+    private fun generatePetInfo(): PetModel? {
+        val petName = binding.eTNombrePet.text.toString().trim()
+        val petBreed = binding.breedAutoComplete.text.toString().trim()
+        val petSubBreed = binding.subBreedAutoComplete.text.toString().trim()
+        // Assuming you want to get URLs of images uploaded by the user, you would have a different mechanism to retrieve them
+        val urlImages = listOf(
+            "https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg",
+            "https://inspirationseek.com/wp-content/uploads/2016/02/Cute-Dog-Images.jpg"
+        )
+        val petAge = binding.ageSpinner.text.toString().toIntOrNull() ?: return null
+        val petWeight = binding.pesoDropdownContainer.text.toString().toDoubleOrNull() ?: return null
+        val petGender = if (binding.genderSwitch.isChecked) "Male" else "Female"
+
+        // Validate the input data and return null if any of the required fields are missing
+        //if (petName.isEmpty() || petBreed.isEmpty()) return null
+
+        return PetModel(
+            petId = "", // Generate or get the ID as needed
+            petName = petName,
+            petBreed = petBreed,
+            petSubBreed = petSubBreed,
+            urlImage = urlImages,
+            petAge = petAge,
+            petWeight = petWeight,
+            petGender = petGender,
+            petOwner = "", // Assign the owner as needed
+            petLocation = "", // Assign the location as needed
+            petAdopted = false, // Set the adopted status as needed
+            creationTimestamp = System.currentTimeMillis() // Use current time for creation timestamp
+        )
     }
+
 
     // Helper function to collect image URLs from the ImageViews or storage
     // TODO: Implement collectImageUrls()
