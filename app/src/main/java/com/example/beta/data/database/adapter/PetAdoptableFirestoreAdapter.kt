@@ -3,10 +3,12 @@ package com.example.beta.data.database.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.beta.data.database.entities.Pet
+import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.ItemFragmentMascotaBinding
 import com.example.beta.ui.holder.PetHolder
 import com.example.beta.ui.view.HomeFragmentDirections
@@ -17,15 +19,39 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class PetAdoptableFirestoreAdapter(options: FirestoreRecyclerOptions<Pet>, private val userId: String) :
-    FirestoreRecyclerAdapter<Pet, PetHolder>(options) {
+class PetAdoptableFirestoreAdapter(
+    options: FirestoreRecyclerOptions<PetModel>,
+    private val userId: String,
+    private val lifecycle: Lifecycle
+) :
+    FirestoreRecyclerAdapter<PetModel, PetHolder>(options), DefaultLifecycleObserver {
+
+    init {
+        lifecycle.addObserver(this) // Add as an observer to lifecycle events
+    }
 
     private var userBookmarks = mutableListOf<String>()
 
     init {
         fetchUserBookmarks()
     }
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        // Start listening to updates from Firestore
+        startListening()
+    }
 
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        // Stop listening to updates from Firestore
+        stopListening()
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        // Clean up resources if needed
+        lifecycle.removeObserver(this)
+    }
     private fun fetchUserBookmarks() {
         val userRef = Firebase.firestore.collection("users").document(userId)
         userRef.get().addOnSuccessListener { documentSnapshot ->
@@ -42,7 +68,7 @@ class PetAdoptableFirestoreAdapter(options: FirestoreRecyclerOptions<Pet>, priva
         }
     }
 
-    override fun onBindViewHolder(holder: PetHolder, position: Int, model: Pet) {
+    override fun onBindViewHolder(holder: PetHolder, position: Int, model: PetModel) {
         holder.bind(model)
 
         // Set the toggle button based on whether the petId is in the bookmarks list

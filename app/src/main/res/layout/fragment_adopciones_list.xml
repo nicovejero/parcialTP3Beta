@@ -34,7 +34,7 @@
 
     <!-- RecyclerView de las Cards -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCardsFavoritos"
+        android:id="@+id/recyclerViewAdopciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/contenedorTituloFavoritos"

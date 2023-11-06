@@ -2,24 +2,25 @@ package com.example.beta.data.database.entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.beta.data.model.PetModel
 
 data class User(
     val userId: String = "",
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
-    val adopted: List<Pet> = emptyList(),
-    val bookmarks: List<Pet> = emptyList(),
+    val adopted: List<PetModel> = emptyList(),
+    val bookmarks: List<PetModel> = emptyList(),
     val urlImage: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        userId = parcel.readString() ?: "",
-        firstName = parcel.readString() ?: "",
-        lastName = parcel.readString() ?: "",
-        email = parcel.readString() ?: "",
-        adopted = parcel.createTypedArrayList(Pet.CREATOR) ?: emptyList(),
-        bookmarks = parcel.createTypedArrayList(Pet.CREATOR) ?: emptyList(),
-        urlImage = parcel.readString() ?: ""
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.createTypedArrayList(PetModel.CREATOR) ?: emptyList(),
+        parcel.createTypedArrayList(PetModel.CREATOR) ?: emptyList(),
+        parcel.readString() ?: ""
     )
 
     override fun describeContents() = 0

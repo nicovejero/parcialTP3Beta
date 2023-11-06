@@ -16,7 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.beta.ImageViewActivity
 import com.example.beta.R
-import com.example.beta.data.database.entities.Pet
+import com.example.beta.data.model.PetModel
 import com.example.beta.data.database.entities.User
 import com.example.beta.databinding.FragmentAdopcionDetailCarouselBinding
 import com.example.beta.ui.holder.ImageAdapter
@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class PetInAdoptionDetailFragment : Fragment() {
     private val args: PetInAdoptionDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentAdopcionDetailCarouselBinding
-    private val pet: Pet by lazy { args.pet }
+    private val petModel: PetModel by lazy { args.pet }
     private val uid: String? by lazy { FirebaseAuth.getInstance().currentUser?.uid }
     private val db = FirebaseFirestore.getInstance()
 
@@ -84,14 +84,14 @@ class PetInAdoptionDetailFragment : Fragment() {
         val petLocation = binding.nombreMascotaPetContainer2
         //val petOwnerPicture = binding.petDetailOwnerPicture
 
-        petName.text = pet.petName
+        petName.text = petModel.petName
         //petBreed.text = petBreed.toString()
         //petSubBreed.text = petSubBreed.toString()
-        petAge.text = pet.petAge.toString()
-        petWeight.text = pet.petWeight.toString()
-        petOwnerName.text = pet.petOwner
-        petGender.text = pet.petGender.toString()
-        petLocation.text = pet.petLocation
+        petAge.text = petModel.petAge.toString()
+        petWeight.text = petModel.petWeight.toString()
+        petOwnerName.text = petModel.petOwner
+        petGender.text = petModel.petGender.toString()
+        petLocation.text = petModel.petLocation
 
         binding.adoptButton.setOnClickListener {
             adoptarPet()
@@ -107,7 +107,7 @@ class PetInAdoptionDetailFragment : Fragment() {
                     val user = documentSnapshot.toObject(User::class.java)
                     user?.let {
                         val updatedAdoptedPets = it.adopted.toMutableList().apply {
-                            add(pet) // Add the new pet to the current list
+                            add(petModel) // Add the new pet to the current list
                         }
                         actualizarAdoptados(uid, updatedAdoptedPets) {
                             removerDeAdoptables()
@@ -135,11 +135,11 @@ class PetInAdoptionDetailFragment : Fragment() {
 
 
 
-    private fun actualizarAdoptados(userId: String, updatedAdoptedPets: List<Pet>, onSuccess: () -> Unit) {
+    private fun actualizarAdoptados(userId: String, updatedAdoptedPetModels: List<PetModel>, onSuccess: () -> Unit) {
         db.collection("users").document(userId)
-            .update("adopted", updatedAdoptedPets)
+            .update("adopted", updatedAdoptedPetModels)
             .addOnSuccessListener {
-                Toast.makeText(requireActivity(), "Has adoptado a ${pet.petName}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), "Has adoptado a ${petModel.petName}", Toast.LENGTH_SHORT).show()
                 onSuccess()
             }
             .addOnFailureListener { e ->
@@ -148,7 +148,7 @@ class PetInAdoptionDetailFragment : Fragment() {
     }
 
     private fun removerDeAdoptables() {
-        db.collection("pets").document(pet.petId).delete()
+        db.collection("pets").document(petModel.petId).delete()
     }
 
     private fun removerDeFavoritos() {

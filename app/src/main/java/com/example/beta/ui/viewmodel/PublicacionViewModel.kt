@@ -1,18 +1,16 @@
 package com.example.beta.ui.viewmodel
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.beta.data.database.entities.Pet
+import com.example.beta.data.model.PetModel
 import com.example.beta.domain.GetBreeds
 import com.example.beta.domain.GetSubBreeds
 import com.example.beta.domain.model.Breed
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import com.example.beta.util.Result
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
@@ -59,17 +57,17 @@ class PublicacionViewModel @Inject constructor(
         }
     }
 
-    fun addPet(pet: Pet) {
+    fun addPet(petModel: PetModel) {
         if (userId != null) {
             isLoading.postValue(true)
             db.collection("pets")
-                .add(pet.toMap()) // Ensure Pet has a toMap() method
+                .add(petModel.toMap()) // Ensure Pet has a toMap() method
                 .addOnSuccessListener { documentReference ->
                     val petId = documentReference.id
-                    pet.petOwner = userId
-                    pet.petId = petId
+                    petModel.petOwner = userId
+                    petModel.petId = petId
                     db.collection("pets").document(petId)
-                        .set(pet)
+                        .set(petModel)
                         .addOnSuccessListener {
                             isLoading.postValue(false)
                             _resetFields.postValue(true) // Signal that fields should be reset

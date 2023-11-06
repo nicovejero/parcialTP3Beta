@@ -2,7 +2,6 @@ package com.example.beta.ui.view
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,10 +14,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.beta.R
-import com.example.beta.data.database.entities.Pet
+import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentPublicacionBinding
 import com.example.beta.ui.viewmodel.PublicacionViewModel
-import com.example.beta.util.Result
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -203,14 +201,18 @@ class PublicacionFragment : Fragment() {
         val petName = binding.eTNombrePet.text.toString()
         val petBreed = binding.breedAutoComplete.text.toString()
         val petSubBreed = binding.subBreedAutoComplete.text.toString()
-        val urlImage = "https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg" // TODO: get image URL from image picker/upload
+        val petImages = binding.eTNombrePet.text.toString() //Reemplazar por urls de imagenes que carga el user
+        val urlImage = ArrayList<String>()
+        urlImage.add("https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg")
+        urlImage.add("https://inspirationseek.com/wp-content/uploads/2016/02/Cute-Dog-Images.jpg")
         // Get the selected pet age from the spinner
         val petAge = binding.ageSpinner.text.toString().toInt()
         // Get the selected gender from the switch
         val petGender = binding.genderSwitch.isChecked
         val petWeight = binding.pesoDropdownContainer.text.toString().toDouble()
         // Create Pet object
-        val pet = Pet(
+        val petModel = PetModel(
+            "",
             petName = petName,
             petBreed = petBreed,
             petSubBreed = petSubBreed,
@@ -220,6 +222,6 @@ class PublicacionFragment : Fragment() {
             petGender = petGender
         )
         // Call ViewModel to add Pet
-        viewModel.addPet(pet)
+        viewModel.addPet(petModel)
     }
 }

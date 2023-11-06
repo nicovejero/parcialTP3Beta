@@ -8,17 +8,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.beta.data.database.adapter.PetAdoptableFirestoreAdapter
-import com.example.beta.data.database.entities.Pet
+import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentFavoritosBinding
 import com.example.beta.ui.viewmodel.FavoritosViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 
 class FavoritosFragment : Fragment() {
     private var _binding: FragmentFavoritosBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FavoritosViewModel by viewModels()
     private var adapter: PetAdoptableFirestoreAdapter? = null
-    private val userId : String = "sQs8W7nRyTZkwZ1MGCYJ3UkGnWV2"
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,12 +37,13 @@ class FavoritosFragment : Fragment() {
 
         viewModel.bookmarkedPetsQuery.observe(viewLifecycleOwner) { query ->
             if (query != null) {
-                val options = FirestoreRecyclerOptions.Builder<Pet>()
-                    .setQuery(query, Pet::class.java)
+                val options = FirestoreRecyclerOptions.Builder<PetModel>()
+                    .setQuery(query, PetModel::class.java)
                     .setLifecycleOwner(this@FavoritosFragment)
                     .build()
                 adapter?.updateOptions(options) ?: run {
-                    adapter = PetAdoptableFirestoreAdapter(options, userId)
+                    adapter = PetAdoptableFirestoreAdapter(options, userId, viewLifecycleOwner.lifecycle)
+
                     binding.recyclerViewCardsFavoritos.adapter = adapter
                 }
             }
