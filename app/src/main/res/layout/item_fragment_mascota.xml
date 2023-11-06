@@ -59,13 +59,17 @@
             android:textSize="13dp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView2"
+
+        <ToggleButton
+            android:id="@+id/toggleBookmark"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="250dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/favorito" />
+            android:background="@null"
+            android:textOff=""
+            android:textOn=""
+            android:drawableTop="@drawable/bookmark_selector"
+            android:padding="13dp" />
 
         <LinearLayout
             android:layout_width="100dp"

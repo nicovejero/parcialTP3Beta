@@ -101,7 +101,7 @@ class PublicacionFragment : Fragment() {
             val petSubBreed = binding.subBreedAutoComplete.text.toString()
             val urlImage = "https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg" // TODO: get image URL from image picker/upload
             // Get the selected pet age from the spinner
-            val petAge = binding.ageSpinner.listSelection
+            val petAge = binding.ageSpinner.text.toString().toInt()
             // Get the selected gender from the switch
             val petGender = binding.genderSwitch.isChecked
 
@@ -112,7 +112,7 @@ class PublicacionFragment : Fragment() {
                 petSubBreed = petSubBreed,
                 urlImage = urlImage,
                 petAge = petAge,
-                petGender = petGender,
+                petGender = petGender
             )
 
             // Call ViewModel to add Pet
@@ -128,10 +128,5 @@ class PublicacionFragment : Fragment() {
             }
 
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null // Avoid memory leak
     }
 }

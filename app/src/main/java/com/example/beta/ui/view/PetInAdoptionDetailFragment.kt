@@ -27,7 +27,6 @@ class PetInAdoptionDetailFragment : Fragment() {
     private val args: PetInAdoptionDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentAdopcionDetailCarouselBinding
     private val pet: Pet by lazy { args.pet }
-    //private val user: User by lazy { args.user }
     private val db = FirebaseFirestore.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

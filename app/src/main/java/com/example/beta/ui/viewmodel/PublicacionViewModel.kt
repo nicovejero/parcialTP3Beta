@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import com.example.beta.util.Result
+import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,8 +22,11 @@ class PublicacionViewModel @Inject constructor(
     private val getSubBreeds: GetSubBreeds // Renamed for clarity
 ) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
     val breedsLiveData = MutableLiveData<List<Breed>>()
     val isLoading = MutableLiveData<Boolean>()
+
+
 
     private val _subBreedsLiveData = MutableLiveData<List<String>>()
     val subBreedsLiveData: LiveData<List<String>> = _subBreedsLiveData
@@ -56,10 +60,12 @@ class PublicacionViewModel @Inject constructor(
     }
 
     fun addPet(pet: Pet, onComplete: (Result<String>) -> Unit) {
+        if (userId != null){
         db.collection("pets")
             .add(pet.toMap()) // Make sure Pet has a method toMap() that converts it to a Map
             .addOnSuccessListener { documentReference ->
                 val petId = documentReference.id
+                pet.petOwner = userId
                 pet.petId = petId
                 db.collection("pets").document(petId)
                     .set(pet)
@@ -67,7 +73,7 @@ class PublicacionViewModel @Inject constructor(
             .addOnFailureListener { e ->
                 onComplete(Result.Error(e)) // Assuming Result.Error is a custom class you've defined
             }
+        return onComplete(Result.Success("Pet added successfully"))
+        }
     }
-
-
 }

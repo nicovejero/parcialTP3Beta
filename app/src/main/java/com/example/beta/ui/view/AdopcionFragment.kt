@@ -5,32 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.beta.databinding.FragmentAdopcionesListBinding
 import com.example.beta.ui.viewmodel.AdopcionViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class AdopcionFragment : Fragment() {
+    private var _binding: FragmentAdopcionesListBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: AdopcionViewModel by viewModels()
+    private val db = FirebaseFirestore.getInstance()
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-    companion object {
-        fun newInstance() = AdopcionFragment()
-    }
-
-    private lateinit var viewModel: AdopcionViewModel
-    private lateinit var binding : FragmentAdopcionesListBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAdopcionesListBinding.inflate(layoutInflater, container, false)
-
+        _binding = FragmentAdopcionesListBinding.inflate(inflater, container, false)
         return binding.root
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AdopcionViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Avoid memory leak
     }
 }

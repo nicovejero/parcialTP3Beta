@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         val petOptions = FirestoreRecyclerOptions.Builder<Pet>()
             .setQuery(query, Pet::class.java)
             .build()
-        petAdapter = PetAdoptableFirestoreAdapter(petOptions)
+        petAdapter = PetAdoptableFirestoreAdapter(petOptions, uid!!)
 
         // Set up the RecyclerView for pet cards
         recyclerViewAdoption.adapter = petAdapter

@@ -10,7 +10,8 @@ data class Pet(
     val petSubBreed: String = "",
     val urlImage: String = "",
     val petAge: Int = 0,
-    val petGender: Boolean
+    val petGender: Boolean,
+    var petOwner: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -19,10 +20,11 @@ data class Pet(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readInt(),
-        parcel.readBoolean()
+        parcel.readBoolean(),
+        parcel.readString() ?: ""
     )
 
-    constructor() : this("", "", "", "", "", 0, false)
+    constructor() : this("", "", "", "", "", 0, false, "")
 
     override fun describeContents(): Int {
         return 0
@@ -36,7 +38,8 @@ data class Pet(
             "petSubBreed" to petSubBreed,
             "urlImage" to urlImage,
             "petAge" to petAge,
-            "petGender" to petGender
+            "petGender" to petGender,
+            "petOwner" to petOwner
         )
     }
 
@@ -48,6 +51,7 @@ data class Pet(
         writeString(urlImage)
         writeInt(petAge)
         writeBoolean(petGender)
+        writeString(petOwner)
     }
 
     companion object {
