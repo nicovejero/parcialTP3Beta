@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,11 @@ import com.example.beta.R
 import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentPublicacionBinding
 import com.example.beta.ui.viewmodel.PublicacionViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.UUID
 
 
 @AndroidEntryPoint
@@ -26,6 +31,11 @@ class PublicacionFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PublicacionViewModel by viewModels()
     private var  selectedImageViewId : Int = 0
+    private val db = FirebaseFirestore.getInstance()
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid
+    private var storageReference = FirebaseStorage.getInstance().reference
+    private  var urlImages : ArrayList<String> = ArrayList()
+    private var lastPosition  = 0
 
     companion object {
         fun newInstance() = PublicacionFragment()
@@ -75,7 +85,7 @@ class PublicacionFragment : Fragment() {
             // Get the image URI from the result
             val imageUri = data?.data
             imageUri?.let {
-                //uploadImageToFirebaseStorage(it)
+                uploadImageToFirebaseStorage(it)
                 guardarImagen(it)
 
             }
@@ -87,6 +97,39 @@ class PublicacionFragment : Fragment() {
         if (imageButton != null) {
             Glide.with(this).load(it).circleCrop().into(imageButton)
         }
+    }
+
+    private fun uploadImageToFirebaseStorage(uri: Uri) {
+        val filename = UUID.randomUUID().toString()
+        Log.e("PublicacionFragment", "uploadImageToFirebaseStorage: $filename")
+        val ref = storageReference.child("images/$filename")
+        Log.e("ExploreFr", "uploadImageToFirebaseStorage: $ref")
+        ref.putFile(uri)
+            .addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener { downloadUri ->
+                    Log.e("PublicacionFragment", "uploadImageToFirebaseStorage: $downloadUri")
+                    // Save the image URL to Firestore
+                    saveImageURLToFirestore(downloadUri.toString())
+                }
+            }
+            .addOnFailureListener {
+                // Handle unsuccessful uploads
+                Toast.makeText(context, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun saveImageURLToFirestore(url: String) {
+        val data = hashMapOf("imageUrl" to url)
+        db.collection("images")
+            .add(data)
+            .addOnSuccessListener {
+                //agrego imagenes a un array de urls para luego ser agregadas en la mascota
+                urlImages.add(url)
+            }
+            .addOnFailureListener {
+                // Handle any failures
+                Toast.makeText(context, "Failed to save image URL", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun resetFields() {
@@ -199,9 +242,14 @@ class PublicacionFragment : Fragment() {
         val petBreed = binding.breedAutoComplete.text.toString()
         val petSubBreed = binding.subBreedAutoComplete.text.toString()
         val petImages = binding.eTNombrePet.text.toString() //Reemplazar por urls de imagenes que carga el user
-        val urlImage = ArrayList<String>()
-        urlImage.add("https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg")
-        urlImage.add("https://inspirationseek.com/wp-content/uploads/2016/02/Cute-Dog-Images.jpg")
+        var urlImage = ArrayList<String>()
+        if(urlImages.isEmpty()){
+            urlImage.add("https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg")
+            urlImage.add("https://inspirationseek.com/wp-content/uploads/2016/02/Cute-Dog-Images.jpg")
+        }
+        else {
+            urlImage = urlImages
+        }
         // Get the selected pet age from the spinner
         val petAge = binding.ageSpinner.text.toString().toInt()
         // Get the selected gender from the switch
