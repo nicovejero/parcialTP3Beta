@@ -68,7 +68,7 @@ class PetInAdoptionDetailFragment : Fragment() {
         // Setup UI elements with petModel data
         binding.petDetailName.text = petModel.petName
         binding.petDetailWeight.text = petModel.petWeight.toString()
-        binding.petDetailGender.text = petModel.petGender.toString()
+        binding.petDetailGender.text = petModel.petGender
         binding.petDetailAge.text = petModel.petAge.toString()
         binding.petDetailOwnerName.text = petModel.petOwner
         binding.petDetailLocation.text = petModel.petLocation

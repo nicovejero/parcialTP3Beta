@@ -1,8 +1,7 @@
-package com.example.beta.data.database.entities
+package com.example.beta.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.beta.data.model.PetModel
 
 data class User(
     val userId: String = "",

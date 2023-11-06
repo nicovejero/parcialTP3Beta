@@ -4,32 +4,32 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.example.beta.R
-import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentPublicacionBinding
+import com.example.beta.domain.model.Breed
 import com.example.beta.ui.viewmodel.PublicacionViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class PublicacionFragment : Fragment() {
     private var _binding: FragmentPublicacionBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PublicacionViewModel by viewModels()
-    private var  selectedImageViewId : Int = 0
+    private var selectedImageViewId: Int = 0
+    private val db = FirebaseFirestore.getInstance()
 
     companion object {
         fun newInstance() = PublicacionFragment()
-         private const val PICK_IMAGE_REQUEST = 1
+        private const val PICK_IMAGE_REQUEST = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,188 +37,170 @@ class PublicacionFragment : Fragment() {
         viewModel.onCreate()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPublicacionBinding.inflate(inflater, container, false)
-
-        binding.simpleImageButton1.setOnClickListener {
-            startImagePicker(R.id.simpleImageButton1)
-        }
-        binding.simpleImageButton2.setOnClickListener {
-            startImagePicker(R.id.simpleImageButton2)
-        }
-        binding.simpleImageButton3.setOnClickListener {
-            startImagePicker(R.id.simpleImageButton3)
-        }
-        binding.simpleImageButton4.setOnClickListener {
-            startImagePicker(R.id.simpleImageButton4)
-        }
-        binding.simpleImageButton5.setOnClickListener {
-            startImagePicker(R.id.simpleImageButton5)
-        }
+        setupImageButtons()
         return binding.root
     }
 
-    private fun startImagePicker(imageViewId : Int){
+    private fun setupImageButtons() {
+        listOf(
+            binding.simpleImageButton1,
+            binding.simpleImageButton2,
+            binding.simpleImageButton3,
+            binding.simpleImageButton4,
+            binding.simpleImageButton5
+        ).forEach { button ->
+            button.setOnClickListener { startImagePicker(it.id) }
+        }
+    }
+
+    private fun startImagePicker(imageViewId: Int) {
         selectedImageViewId = imageViewId
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        startActivityForResult(intent, PublicacionFragment.PICK_IMAGE_REQUEST)
+        Intent(Intent.ACTION_GET_CONTENT).also {
+            it.type = "image/*"
+            startActivityForResult(it, PICK_IMAGE_REQUEST)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PublicacionFragment.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            // Get the image URI from the result
-            val imageUri = data?.data
-            imageUri?.let {
-                //uploadImageToFirebaseStorage(it)
-                guardarImagen(it)
-
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                binding.run {
+                    val imageView = when (selectedImageViewId) {
+                        simpleImageButton1.id -> simpleImageButton1
+                        simpleImageButton2.id -> simpleImageButton2
+                        simpleImageButton3.id -> simpleImageButton3
+                        simpleImageButton4.id -> simpleImageButton4
+                        simpleImageButton5.id -> simpleImageButton5
+                        else -> null
+                    }
+                    imageView?.let { Glide.with(this@PublicacionFragment).load(uri).into(it) }
+                }
             }
         }
     }
 
-    private fun guardarImagen(it: Uri) {
-        val imageButton = view?.findViewById<ImageView>(selectedImageViewId)
-        if (imageButton != null) {
-            Glide.with(this).load(it).circleCrop().into(imageButton)
+    private fun guardarImagen(uri: Uri) {
+        view?.findViewById<ImageView>(selectedImageViewId)?.let { imageView ->
+            Glide.with(this).load(uri).circleCrop().into(imageView)
         }
     }
 
     private fun resetFields() {
-        // Reset EditText fields
-        binding.eTNombrePet.text = null
-        binding.breedAutoComplete.setText("", false)
-        binding.subBreedAutoComplete.setText("", false)
-        binding.publicacionDescriptionInput.text = null
-        binding.ageSpinner.clearListSelection()
-        binding.locationsSpinner.clearListSelection()
-        binding.pesoDropdownContainer.text = null
-        binding.publicacionPhoneInput.text = null
-
-        // Reset ImageViews or other image selectors
-        // Assuming you have a method to clear the images or set to default
+        with(binding) {
+            eTNombrePet.text = null
+            breedAutoComplete.setText("", false)
+            subBreedAutoComplete.setText("", false)
+            publicacionDescriptionInput.text = null
+            ageSpinner.clearListSelection()
+            locationsSpinner.clearListSelection()
+            pesoDropdownContainer.text = null
+            publicacionPhoneInput.text = null
+            genderSwitch.isChecked = false
+        }
         resetImages()
-
-        // Reset Spinners or AutoCompleteTextViews to default value
-        binding.ageSpinner.clearListSelection()
-
-        // Reset the switch to the default position
-        binding.genderSwitch.isChecked = false
     }
 
     private fun resetImages() {
-        // Clear the image selections here
-        // Example to reset image on ImageView
-        //Glide.with(this).clear(binding.profileImage)
-        //binding.profileImage.setImageDrawable(null) // or set to a default image if desired
+        // Implement the logic to reset images
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Initialize an ArrayAdapter with an empty list
-        val breedsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf<String>())
-        val subBreedsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf<String>())
-
-        // Assign the adapter to the AutoCompleteTextView
-        binding.breedAutoComplete.setAdapter(breedsAdapter)
-        binding.subBreedAutoComplete.setAdapter(subBreedsAdapter)
-        binding.subBreedAutoComplete.showDropDown()
-
-        viewModel.resetFields.observe(viewLifecycleOwner) { shouldReset ->
-            // If you made resetFields nullable, then handle the potential null case here.
-            shouldReset?.let {
-                if (it) {
-                    resetFields()
-                    viewModel.onFieldsResetComplete()
-                }
-            }
-        }
-
-        // Observe LiveData for breeds
-        viewModel.breedsLiveData.observe(viewLifecycleOwner) { breedsList ->
-            breedsAdapter.clear()
-            if (!breedsList.isNullOrEmpty()) {
-                breedsAdapter.addAll(breedsList.map { it.breedName }) // Now you have a list
-            }
-            breedsAdapter.notifyDataSetChanged()
-        }
-
-        // Set an onClickListener to the breed dropdown to show the dropdown menu when clicked
-        binding.breedDropdownContainer.setOnClickListener {
-            binding.breedAutoComplete.showDropDown()
-        }
-
-        viewModel.subBreedsLiveData.observe(viewLifecycleOwner) { subBreedsList ->
-            subBreedsAdapter.clear()
-            if (subBreedsList.isNotEmpty()) {
-                subBreedsAdapter.addAll(subBreedsList)
-                binding.subBreedDropdownContainer.visibility = View.VISIBLE
-            } else {
-                binding.subBreedDropdownContainer.visibility = View.GONE
-            }
-            subBreedsAdapter.notifyDataSetChanged() // Notify the adapter
-        }
-
-        binding.breedAutoComplete.setOnItemClickListener { adapterView, _, position, _ ->
-            val selectedBreed = adapterView.getItemAtPosition(position) as String
-            viewModel.onBreedSelected(selectedBreed)
-        }
-
-        // Set up the age spinner
-        val ages = (1..20).toList() // Replace with your age range
-        val locations = listOf("CABA", "GBA", "Cordoba", "Rosario", "Mendoza", "Salta", "Tucuman", "Neuquen", "Mar del Plata", "La Plata", "Santa Fe", "San Juan", "San Luis", "Entre Rios", "Corrientes", "Misiones", "Chaco", "Formosa", "Jujuy", "La Rioja", "Santiago del Estero", "Catamarca", "Chubut", "Tierra del Fuego", "Santa Cruz").toList()
-        val ageAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ages.map { it.toString() })
-        val locationsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, locations.map { it.toString() })
-
-        binding.locationsSpinner.setAdapter(locationsAdapter)
-        binding.ageSpinner.setAdapter(ageAdapter)
-
-        // Set up the gender switch
-        binding.genderSwitch.setOnCheckedChangeListener { _, isChecked ->
-            // isChecked == true if the switch is in the "On" position
-            val petGender = if(isChecked) "Male" else "Female"
-            Toast.makeText(requireContext(), "gender: $petGender", Toast.LENGTH_SHORT).show()
-            // Do something with the gender value if neede
-        }
-
-        //
-        binding.confirmAdoptionButton.setOnClickListener {
-            generatePetAndAdopt()
+        with(viewModel) {
+            loadBreeds()
+            setupObservers()
+            initializeAdapters()
+            handleGenderSwitch()
+            setupButtonListeners()
         }
     }
 
-    private fun generatePetAndAdopt() {
-        val petName = binding.eTNombrePet.text.toString()
-        val petBreed = binding.breedAutoComplete.text.toString()
-        val petSubBreed = binding.subBreedAutoComplete.text.toString()
-        val petImages = binding.eTNombrePet.text.toString() //Reemplazar por urls de imagenes que carga el user
-        val urlImage = ArrayList<String>()
-        urlImage.add("https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg")
-        urlImage.add("https://inspirationseek.com/wp-content/uploads/2016/02/Cute-Dog-Images.jpg")
-        // Get the selected pet age from the spinner
-        val petAge = binding.ageSpinner.text.toString().toInt()
-        // Get the selected gender from the switch
-        val petGender = binding.genderSwitch.isChecked
-        val petWeight = binding.pesoDropdownContainer.text.toString().toDouble()
-        // Create Pet object
-        val petModel = PetModel(
-            "",
-            petName = petName,
-            petBreed = petBreed,
-            petSubBreed = petSubBreed,
-            urlImage = urlImage,
-            petAge = petAge,
-            petWeight = petWeight,
-            petGender = petGender
+    private fun setupObservers() {
+        // Observe breeds LiveData
+        viewModel.breedsLiveData.observe(viewLifecycleOwner) { breedsList ->
+            updateBreedsList(breedsList)
+        }
+
+        // Observe error LiveData
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                // Handle the error message
+            }
+        }
+
+        // Observe resetFields LiveData
+        viewModel.resetFields.observe(viewLifecycleOwner) { shouldReset ->
+            if (shouldReset == true) {
+                resetFields()
+                viewModel.onFieldsResetComplete()
+            }
+        }
+
+        // Observe subBreedsLiveData LiveData
+        viewModel.subBreedsLiveData.observe(viewLifecycleOwner) { subBreedsList ->
+            updateSubBreedsList(subBreedsList)
+        }
+    }
+
+    private fun updateBreedsList(breedsList: List<Breed>) {
+        val adapter = (binding.breedAutoComplete.adapter as ArrayAdapter<String>)
+        adapter.clear()
+        adapter.addAll(breedsList.map { it.breedName })
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun updateSubBreedsList(subBreedsList: List<String>) {
+        val adapter = (binding.subBreedAutoComplete.adapter as ArrayAdapter<String>)
+        adapter.clear()
+        adapter.addAll(subBreedsList)
+        adapter.notifyDataSetChanged()
+        binding.subBreedDropdownContainer.visibility = if (subBreedsList.isNotEmpty()) View.VISIBLE else View.GONE
+    }
+
+    private fun PublicacionViewModel.initializeAdapters() {
+        val context = requireContext()
+        binding.breedAutoComplete.setAdapter(
+            ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line)
         )
-        // Call ViewModel to add Pet
-        viewModel.addPet(petModel)
+        binding.subBreedAutoComplete.setAdapter(
+            ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line)
+        )
+        // Initialize other adapters here
+    }
+
+    private fun PublicacionViewModel.handleGenderSwitch() {
+        binding.genderSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val petGender = if (isChecked) "Macho" else "Hembra"
+            Toast.makeText(requireContext(), "Gender: $petGender", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun PublicacionViewModel.setupButtonListeners() {
+        binding.confirmAdoptionButton.setOnClickListener {
+            generatePetInfo()?.let { petInfo ->
+                // TODO: Implement database operation to add pet info
+            }
+        }
+    }
+
+    private fun generatePetInfo(): Map<String, Any>? {
+        // TODO: Implement the logic to generate pet info
+        return null
+    }
+
+    // Helper function to collect image URLs from the ImageViews or storage
+    // TODO: Implement collectImageUrls()
+    // private fun collectImageUrls(): ArrayList<String> {
+    //     val urls = ArrayList<String>()
+    //     // Add logic to collect the actual image URLs
+    //     return urls
+    // }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
