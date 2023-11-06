@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Pet(
-    val petId: String = "",
+    var petId: String = "",
     val petName: String = "",
     val petBreed: String = "",
     val petSubBreed: String = "",

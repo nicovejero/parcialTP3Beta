@@ -13,7 +13,6 @@
         android:focusable="true"
         android:id="@+id/cardAdoption"
         style="?attr/materialCardViewElevatedStyle"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +25,6 @@
             android:layout_gravity="fill"
             android:scaleType="centerCrop"
             android:src="@drawable/caraperro" />
-
 
         <TextView
             android:id="@+id/tvCardNombre"

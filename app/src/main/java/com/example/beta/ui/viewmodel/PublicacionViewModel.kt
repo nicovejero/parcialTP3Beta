@@ -59,10 +59,15 @@ class PublicacionViewModel @Inject constructor(
         db.collection("pets")
             .add(pet.toMap()) // Make sure Pet has a method toMap() that converts it to a Map
             .addOnSuccessListener { documentReference ->
-                onComplete(Result.Success(documentReference.id)) // Assuming Result.Success is a custom class you've defined
+                val petId = documentReference.id
+                pet.petId = petId
+                db.collection("pets").document(petId)
+                    .set(pet)
             }
             .addOnFailureListener { e ->
                 onComplete(Result.Error(e)) // Assuming Result.Error is a custom class you've defined
             }
     }
+
+
 }

@@ -1,15 +1,20 @@
 package com.example.beta.ui.view
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.beta.InicioActivity
+import com.example.beta.MainActivity
 import com.example.beta.R
 import com.example.beta.data.database.entities.User
 import com.example.beta.databinding.FragmentPerfilBinding
@@ -20,6 +25,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class PerfilFragment : Fragment() {
+
+    companion object {
+        private val TAG = PerfilFragment::class.java.simpleName
+        private const val PICK_IMAGE_REQUEST = 1
+    }
+
     private lateinit var binding: FragmentPerfilBinding
     private val db = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid!!
@@ -46,7 +57,7 @@ class PerfilFragment : Fragment() {
                 binding.profileEmail.text = user?.email
                 Glide
                     .with(binding.root.context)
-                    .load(user?.urlImage)
+                    .load(user?.urlImage).circleCrop()
                     .into(binding.profileImage)
             }
         }
@@ -57,9 +68,15 @@ class PerfilFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPerfilBinding.inflate(inflater, container, false)
+        binding = FragmentPerfilBinding.inflate(layoutInflater, container, false)
         val view = binding.root
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
+
+        binding.profileImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        }
 
         btnLogout.setOnClickListener {
             mGoogleSignInClient.signOut().addOnCompleteListener {
@@ -70,6 +87,48 @@ class PerfilFragment : Fragment() {
             }
         }
         return view
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            // Get the image URI from the result
+            val imageUri = data?.data
+            imageUri?.let {
+                //uploadImageToFirebaseStorage(it)
+                guardarImagen(it)
+            }
+        }
+    }
+
+    private fun guardarImagen(it: Uri) {
+        val imageButton = view?.findViewById<ImageView>(R.id.profile_image)
+        if (imageButton != null) {
+            Glide.with(this).load(it).circleCrop().into(imageButton)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val navController = view?.findNavController()
+        val action = SettingFragmentDirections.actionGlobalNavDrawerGoBack()
+
+
+        binding.goBackImage.setOnClickListener{
+
+            if (navController != null) {
+                navController.popBackStack(R.id.nav_graph, false)
+            }
+
+            if (activity is MainActivity) {
+                (activity as MainActivity).setBottomNavViewVisibility(View.VISIBLE)
+                (activity as MainActivity).supportActionBar?.show()
+            }
+
+            navController?.navigate(action)
+            true
+        }
+        super.onViewCreated(view, savedInstanceState)
     }
 
 }

@@ -20,7 +20,7 @@
         android:layout_marginTop="20dp">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/petDetailPicture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/perro_salchicha_inicio" />
@@ -54,10 +54,11 @@
             android:id="@+id/contenedorFiltroTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imageView2">
+            android:layout_below="@id/petDetailPicture">
 
             <!-- Nombre -->
             <TextView
+                android:id="@+id/petDetailName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|top"
@@ -69,6 +70,7 @@
 
             <!-- Edad -->
             <TextView
+                android:id="@+id/petDetailAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|top"
@@ -80,6 +82,7 @@
 
             <!-- Ubicación -->
             <TextView
+                android:id="@+id/petDetailLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
@@ -92,7 +95,7 @@
         </FrameLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/petDetailAdoptButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
@@ -112,6 +115,7 @@
                 android:layout_height="63dp">
                 <!-- Genero -->
                 <TextView
+                    android:id="@+id/petDetailGender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -128,6 +132,7 @@
                     android:textSize="14dp" />
                 <!-- Peso -->
                 <TextView
+                    android:id="@+id/petDetailWeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -156,7 +161,7 @@
                     android:layout_marginTop="7dp">
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/petDetailOwnerPicture"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/avatar" />
@@ -169,7 +174,7 @@
                     android:layout_marginLeft="310dp">
 
                     <Button
-                        android:id="@+id/callButton"
+                        android:id="@+id/petDetailCallOwnerButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
@@ -179,7 +184,6 @@
                 </FrameLayout>
 
                 <TextView
-                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="80dp"
@@ -187,7 +191,7 @@
                     android:text="Dueño" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/petDetailOwnerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="80dp"
@@ -211,5 +215,5 @@
         </LinearLayout>
 
     </FrameLayout>
-
 </RelativeLayout>
+

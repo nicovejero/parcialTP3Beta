@@ -26,7 +26,7 @@ class PetAdoptableFirestoreAdapter(options: FirestoreRecyclerOptions<Pet>) :
             if (position != RecyclerView.NO_POSITION) {
                 val clickedPet = getItem(position)
                 Log.d("PetAdoptableFirestoreAdapter", "onBindViewHolder: " + clickedPet.petName)
-                val action = HomeFragmentDirections.actionHomeFragmentToPetInAdoptionDetailFragment(clickedPet)
+                val action = HomeFragmentDirections.actionHomeFragmentToPetInAdoptionDetailFragment(clickedPet, "asd")
                 it.findNavController().navigate(action)
             }
         }

@@ -99,7 +99,7 @@ class PublicacionFragment : Fragment() {
             val petName = binding.eTNombrePet.text.toString()
             val petBreed = binding.breedAutoComplete.text.toString()
             val petSubBreed = binding.subBreedAutoComplete.text.toString()
-            val urlImage = "" // TODO: get image URL from image picker/upload
+            val urlImage = "https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg" // TODO: get image URL from image picker/upload
             // Get the selected pet age from the spinner
             val petAge = binding.ageSpinner.listSelection
             // Get the selected gender from the switch
@@ -112,7 +112,7 @@ class PublicacionFragment : Fragment() {
                 petSubBreed = petSubBreed,
                 urlImage = urlImage,
                 petAge = petAge,
-                petGender = petGender
+                petGender = petGender,
             )
 
             // Call ViewModel to add Pet
