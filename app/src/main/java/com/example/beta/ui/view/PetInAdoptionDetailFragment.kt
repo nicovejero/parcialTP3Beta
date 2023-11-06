@@ -83,7 +83,7 @@ class PetInAdoptionDetailFragment : Fragment() {
                 viewModel.adoptPet(petModel, userId)
                 viewModel.markPetAsAdopted(petModel.petId)
                 val action = PetInAdoptionDetailFragmentDirections.actionGlobalToAdopcionFragment()
-                findNavController().navigateUp()
+                findNavController().popBackStack(R.id.nav_graph, false)
                 findNavController().navigate(action)
             } ?: Toast.makeText(requireContext(), "You must be logged in to adopt a pet", Toast.LENGTH_SHORT).show()
         }

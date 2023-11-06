@@ -38,7 +38,12 @@ class HomeViewModel : ViewModel() {
         // Return a query that fetches non-adopted pets ordered by some criteria, such as timestamp
         return db.collection("pets")
             .whereEqualTo("adopted", false)
-            .orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
+    }
+
+    fun getOrderedPetQuery(): Query {
+        return db.collection("pets")
+        .whereEqualTo("adopted", false)
+        .orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
     }
 
     fun getUserId(): String {

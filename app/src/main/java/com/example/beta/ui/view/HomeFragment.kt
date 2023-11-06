@@ -62,14 +62,13 @@ class HomeFragment : Fragment() {
 
     }
 
-
     private fun setupRecyclerViews() {
         // Initialize the adapter for the pet cards with an empty FirestoreRecyclerOptions
         val options = FirestoreRecyclerOptions.Builder<PetModel>()
             .setQuery(viewModel.getInitialPetQuery(), PetModel::class.java)
             .build()
 
-        petAdapter = PetAdoptableFirestoreAdapter(options, viewModel.getUserId(), viewLifecycleOwner.lifecycle)
+        petAdapter = PetAdoptableFirestoreAdapter(options, viewModel.getUserId())
         binding.cardsRecyclerView.adapter = petAdapter
         binding.cardsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 

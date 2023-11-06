@@ -42,7 +42,7 @@ class AdopcionFragment : Fragment() {
                     .setLifecycleOwner(viewLifecycleOwner)
                     .build()
                 adapter?.updateOptions(options) ?: run {
-                    adapter = PetAdoptableFirestoreAdapter(options, userId, viewLifecycleOwner.lifecycle)
+                    adapter = PetAdoptableFirestoreAdapter(options, userId)
                     binding.recyclerViewAdopciones.adapter = adapter
                 }
             }
