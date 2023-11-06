@@ -3,7 +3,7 @@
 
 
     <Preference
-        app:title="atras"
+        app:title="Configuración"
         app:key="back_key"
         app:icon="@drawable/arrow_go_backsvg"/>
 
