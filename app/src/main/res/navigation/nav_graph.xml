@@ -56,8 +56,8 @@
     <fragment
         android:id="@+id/petInAdoptionDetailFragment"
         android:name="com.example.beta.ui.view.PetInAdoptionDetailFragment"
-        android:label="fragment_pet_in_adoption_detail"
-        tools:layout="@layout/fragment_pet_in_adoption_detail" >
+        android:label="Detalle"
+        tools:layout="@layout/fragment_pet_in_adoption_detail">
         <argument android:name="pet"
             app:argType="com.example.beta.data.database.entities.Pet"/>
     </fragment>

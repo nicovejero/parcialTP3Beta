@@ -14,7 +14,8 @@
             android:id="@+id/petDetailPicture"
             android:layout_width="match_parent"
             android:layout_height="200sp"
-            android:layout_marginTop="10sp"
+            android:layout_marginTop="60sp"
+            android:orientation="horizontal"
             app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager" />
 
         <!-- Nombre -->
