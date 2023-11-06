@@ -1,42 +1,85 @@
 package com.example.beta.ui.view
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.example.beta.R
-import com.example.beta.databinding.FragmentAdopcionesListBinding
-import com.example.beta.databinding.FragmentPublicacionBinding
-import com.example.beta.ui.viewmodel.AdopcionViewModel
+import com.example.beta.data.database.adapter.PetAdoptableFirestoreAdapter
+import com.example.beta.data.database.entities.Pet
+import com.example.beta.databinding.FragmentFavoritosBinding
 import com.example.beta.ui.viewmodel.FavoritosViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class FavoritosFragment : Fragment() {
-    private var _binding: FragmentAdopcionesListBinding? = null
+    private var _binding: FragmentFavoritosBinding? = null
     private val binding get() = _binding!!
-    private val db = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid
     private val viewModel: FavoritosViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.onCreate()
-    }
+    private var adapter: PetAdoptableFirestoreAdapter? = null
+    private val userId : String = "sQs8W7nRyTZkwZ1MGCYJ3UkGnWV2"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAdopcionesListBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoritosBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Fetch and subscribe to bookmarked pets when the view is created
+        viewModel.fetchBookmarkedPets()
+
+        viewModel.bookmarkedPetsQuery.observe(viewLifecycleOwner) { query ->
+            if (query != null) {
+                val options = FirestoreRecyclerOptions.Builder<Pet>()
+                    .setQuery(query, Pet::class.java)
+                    .setLifecycleOwner(this@FavoritosFragment)
+                    .build()
+                adapter?.updateOptions(options) ?: run {
+                    adapter = PetAdoptableFirestoreAdapter(options, userId)
+                    binding.recyclerViewCardsFavoritos.adapter = adapter
+                }
+            }
+        }
+
+        viewModel.noBookmarksAvailable.observe(viewLifecycleOwner) { noBookmarks ->
+            if (noBookmarks) {
+                // Show message or adjust UI for no bookmarks.
+                showMessage("You have no bookmarked pets.")
+                // Adjust RecyclerView visibility or other UI elements if necessary
+                binding.recyclerViewCardsFavoritos.visibility = View.GONE
+            } else {
+                // Hide the message or adjust the UI to show bookmarks.
+                binding.recyclerViewCardsFavoritos.visibility = View.VISIBLE
+            }
+        }
     }
 
+    private fun showMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Start listening to changes in the Firestore
+        adapter?.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Stop listening to changes in the Firestore
+        adapter?.stopListening()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Clean up resources and listeners
+        adapter?.stopListening()
+        _binding = null
+    }
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Contenedor del filtro  -->
+    <!-- Contenedor del filtro -->
     <FrameLayout
         android:id="@+id/contenedorTituloFavoritos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        >
+        android:layout_marginTop="40dp">
 
         <!-- Título -->
         <TextView
@@ -22,7 +22,6 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-
         <!-- Filtros (usando ChipGroup) -->
         <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
@@ -32,14 +31,19 @@
 
     </FrameLayout>
 
-    <!-- RecyclerView de las Cards -->
+    <!-- RecyclerView de las Cards --><!-- Updated height --><!-- Adjusted to be above some bottom element --> <!-- Changed margin to padding for better scrolling effect --> <!-- Set the LayoutManager -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCardsFavoritos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_below="@id/contenedorTituloFavoritos"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="100dp" />
-
+        android:layout_above="@+id/someBottomElement"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <View
+        android:id="@+id/someBottomElement"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

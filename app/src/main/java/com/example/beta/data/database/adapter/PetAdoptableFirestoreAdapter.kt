@@ -10,6 +10,7 @@ import com.example.beta.ui.holder.PetHolder
 import com.example.beta.ui.view.HomeFragmentDirections
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -43,23 +44,25 @@ class PetAdoptableFirestoreAdapter(options: FirestoreRecyclerOptions<Pet>, priva
         holder.bind(model)
 
         // Set the toggle button based on whether the petId is in the bookmarks list
-        holder.toggleButton.isChecked = userBookmarks.contains(model.petId)
+        val petId = snapshots.getSnapshot(position).id // Assuming petId is the document ID in Firestore
+        holder.toggleButton.isChecked = userBookmarks.contains(petId)
 
         holder.toggleButton.setOnClickListener {
-            val petId = model.petId
             val isBookmarked = holder.toggleButton.isChecked
+            val userRef = FirebaseFirestore.getInstance().collection("users").document(userId)
 
             if (isBookmarked) {
+                // If it wasn't bookmarked before, add to bookmarks in Firestore
                 if (!userBookmarks.contains(petId)) {
-                    userBookmarks.add(petId)
-                    updateUserBookmarks()
+                    userRef.update("bookmarks", FieldValue.arrayUnion(petId))
                 }
             } else {
-                userBookmarks.remove(petId)
-                updateUserBookmarks()
+                // If it was bookmarked, remove from bookmarks in Firestore
+                userRef.update("bookmarks", FieldValue.arrayRemove(petId))
             }
         }
     }
+
 
     private fun updateUserBookmarks() {
         val userRef = Firebase.firestore.collection("users").document(userId)
@@ -77,4 +80,5 @@ class PetAdoptableFirestoreAdapter(options: FirestoreRecyclerOptions<Pet>, priva
         val binding = ItemFragmentMascotaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PetHolder(binding)
     }
+
 }
