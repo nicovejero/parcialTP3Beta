@@ -37,7 +37,6 @@ class SettingFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navController = view.findNavController()
-        val action = SettingFragmentDirections.actionGlobalNavDrawerGoBack()
 
         val goBackButton = findPreference<Preference>("back_key")
         goBackButton?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -47,7 +46,7 @@ class SettingFragment : PreferenceFragmentCompat() {
                 (activity as MainActivity).setBottomNavViewVisibility(View.VISIBLE)
             }
 
-            navController.navigate(action)
+            navController.navigateUp()
             true
         }
 

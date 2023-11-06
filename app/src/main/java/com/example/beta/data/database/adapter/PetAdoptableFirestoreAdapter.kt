@@ -103,19 +103,6 @@ class PetAdoptableFirestoreAdapter(
         }
     }
 
-
-    private fun updateUserBookmarks() {
-        val userRef = Firebase.firestore.collection("users").document(userId)
-        userRef.update("bookmarks", userBookmarks)
-            .addOnSuccessListener {
-                // Successfully updated bookmarks
-            }
-            .addOnFailureListener { e ->
-                // Handle error
-                e.printStackTrace()
-            }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetHolder {
         val binding = ItemFragmentMascotaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PetHolder(binding)

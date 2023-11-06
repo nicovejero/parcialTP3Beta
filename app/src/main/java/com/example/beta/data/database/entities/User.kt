@@ -9,8 +9,8 @@ data class User(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
-    val adopted: List<PetModel> = emptyList(),
-    val bookmarks: List<PetModel> = emptyList(),
+    val adopted: List<String> = emptyList(),
+    val bookmarks: List<String> = emptyList(),
     val urlImage: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -18,21 +18,21 @@ data class User(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.createTypedArrayList(PetModel.CREATOR) ?: emptyList(),
-        parcel.createTypedArrayList(PetModel.CREATOR) ?: emptyList(),
+        mutableListOf<String>().apply { parcel.readStringList(this) },
+        mutableListOf<String>().apply { parcel.readStringList(this) },
         parcel.readString() ?: ""
     )
 
     override fun describeContents() = 0
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(userId)
-        parcel.writeString(firstName)
-        parcel.writeString(lastName)
-        parcel.writeString(email)
-        parcel.writeTypedList(adopted)
-        parcel.writeTypedList(bookmarks)
-        parcel.writeString(urlImage)
+    override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel) {
+        writeString(userId)
+        writeString(firstName)
+        writeString(lastName)
+        writeString(email)
+        writeStringList(adopted)
+        writeStringList(bookmarks)
+        writeString(urlImage)
     }
 
     companion object CREATOR : Parcelable.Creator<User> {

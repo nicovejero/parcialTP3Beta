@@ -110,8 +110,8 @@ class PerfilFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val navController = view?.findNavController()
-        val action = SettingFragmentDirections.actionGlobalNavDrawerGoBack()
+
+        val navController = binding.root.findNavController()
 
 
         binding.goBackImage.setOnClickListener{
@@ -125,7 +125,7 @@ class PerfilFragment : Fragment() {
                 (activity as MainActivity).supportActionBar?.show()
             }
 
-            navController?.navigate(action)
+            navController.popBackStack()
             true
         }
         super.onViewCreated(view, savedInstanceState)
