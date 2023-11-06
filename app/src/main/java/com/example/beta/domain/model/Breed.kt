@@ -1,9 +1,11 @@
 package com.example.beta.domain.model
 
+import androidx.room.ColumnInfo
 import com.example.beta.data.database.entities.BreedEntity
 import com.example.beta.data.model.BreedsApiResponse
 
 data class Breed(
+    @ColumnInfo(name = "breed") // This maps the column name "breed" to the field "breedName"
     val breedName: String,
     val subBreeds: List<String>
 )

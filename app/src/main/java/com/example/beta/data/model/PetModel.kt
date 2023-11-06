@@ -11,10 +11,11 @@ data class PetModel(
     val urlImage: List<String> = emptyList(),
     val petAge: Int = 0,
     val petWeight: Double = 0.0,
-    val petGender: Boolean = false,
+    val petGender: String = "",
     var petOwner: String = "",
     var petLocation: String = "",
     val petAdopted: Boolean = false,
+    var creationTimestamp: Long = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -24,16 +25,26 @@ data class PetModel(
         mutableListOf<String>().apply { parcel.readStringList(this) },
         parcel.readInt(),
         parcel.readDouble(),
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
         parcel.readByte() != 0.toByte(),
-        parcel.readString() ?: "",
-        parcel.readString() ?: "",
-        parcel.readByte() != 0.toByte()
+        parcel.readValue(Long::class.java.classLoader) as Long // Updated line
     )
 
-    constructor() : this("", "", "", "", emptyList(), 0, 0.0, false, "", "")
-
-    override fun describeContents(): Int {
-        return 0
+    override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel) {
+        writeString(petId)
+        writeString(petName)
+        writeString(petBreed)
+        writeString(petSubBreed)
+        writeStringList(urlImage)
+        writeInt(petAge)
+        writeDouble(petWeight)
+        writeString(petGender)
+        writeString(petOwner)
+        writeString(petLocation)
+        writeByte(if (petAdopted) 1 else 0)
+        writeValue(creationTimestamp) // Updated line
     }
 
     fun toMap(): Map<String, Any> {
@@ -48,22 +59,13 @@ data class PetModel(
             "petGender" to petGender,
             "petOwner" to petOwner,
             "petLocation" to petLocation,
-            "petAdopted" to petAdopted
+            "petAdopted" to petAdopted,
+            "creationTimestamp" to creationTimestamp
         )
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel) {
-        writeString(petId)
-        writeString(petName)
-        writeString(petBreed)
-        writeString(petSubBreed)
-        writeStringList(urlImage)
-        writeInt(petAge)
-        writeDouble(petWeight)
-        writeBoolean(petGender)
-        writeString(petOwner)
-        writeString(petLocation)
-        writeBoolean(petAdopted)
+    override fun describeContents(): Int {
+        return 0
     }
 
     companion object {

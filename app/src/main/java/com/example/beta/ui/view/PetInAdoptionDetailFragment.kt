@@ -68,7 +68,7 @@ class PetInAdoptionDetailFragment : Fragment() {
         // Setup UI elements with petModel data
         binding.petDetailName.text = petModel.petName
         binding.petDetailWeight.text = petModel.petWeight.toString()
-        binding.petDetailGender.text = petModel.petGender.toString()
+        binding.petDetailGender.text = petModel.petGender
         binding.petDetailAge.text = petModel.petAge.toString()
         binding.petDetailOwnerName.text = petModel.petOwner
         binding.petDetailLocation.text = petModel.petLocation
@@ -83,17 +83,12 @@ class PetInAdoptionDetailFragment : Fragment() {
                 viewModel.adoptPet(petModel, userId)
                 viewModel.markPetAsAdopted(petModel.petId)
                 val action = PetInAdoptionDetailFragmentDirections.actionGlobalToAdopcionFragment()
-                findNavController().navigateUp()
+                findNavController().popBackStack(R.id.nav_graph, false)
                 findNavController().navigate(action)
             } ?: Toast.makeText(requireContext(), "You must be logged in to adopt a pet", Toast.LENGTH_SHORT).show()
         }
         // Consider placing the following button click listeners here if not already defined
 
-        binding.adoptButton.setOnClickListener {
-            uid?.let { userId ->
-                viewModel.adoptPet(petModel, userId)
-            } ?: Toast.makeText(requireContext(), "You must be logged in to adopt a pet", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setupRecyclerView(imageUrls: ArrayList<String>) {

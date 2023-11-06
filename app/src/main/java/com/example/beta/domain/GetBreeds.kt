@@ -6,17 +6,19 @@ import javax.inject.Inject
 
 class GetBreeds @Inject constructor(private val repository: BreedRepository) {
     suspend operator fun invoke(): List<Breed> {
-        // Try to get breeds from the API
-        val breedsFromApi = repository.getAllBreedsFromApi()
+        return try {
+            // Attempt to get breeds from the API
+            val breedsFromApi = repository.getAllBreedsFromApi()
 
-        // If breeds are fetched from API, clear the database and insert the new breeds
-        if (breedsFromApi.isNotEmpty()) {
+            // If successful, clear the database and insert new breeds
             repository.clearBreeds()
             repository.insertBreeds(breedsFromApi)
-            return breedsFromApi
-        }
 
-        // If the API call did not return any breeds, fall back to the database
-        return repository.getAllBreedsFromDatabase()
+            // Return the breeds fetched from the API
+            breedsFromApi
+        } catch (exception: Exception) {
+            // If fetching from the API fails, fall back to the database
+            repository.getAllBreedsFromDatabase()
+        }
     }
 }

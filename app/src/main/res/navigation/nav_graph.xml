@@ -18,6 +18,9 @@
         android:id="@+id/action_global_to_adopcionFragment"
         app:destination="@id/adopcion_fragment" />
 
+    <action
+        android:id="@+id/action_global_to_PetInAdoptionDetailFragment"
+        app:destination="@id/petInAdoptionDetailFragment" />
     <!-- Fragmentos para Drawer Menu -->
         <fragment
             android:id="@+id/nav_drawer_perfil"
@@ -32,17 +35,11 @@
             android:id="@+id/HomeFragment"
             android:name="com.example.beta.ui.view.HomeFragment"
             android:label="Home" >
-            <action
-                android:id="@+id/action_homeFragment_to_petInAdoptionDetailFragment"
-                app:destination="@id/petInAdoptionDetailFragment" />
         </fragment>
         <fragment
             android:id="@+id/favoritos_fragment"
             android:name="com.example.beta.ui.view.FavoritosFragment"
             android:label="Favoritos" >
-            <action
-                android:id="@+id/action_favoritosFragment_to_petInAdoptionDetailFragment"
-                app:destination="@id/petInAdoptionDetailFragment" />
         </fragment>
         <fragment
             android:id="@+id/adopcion_fragment"

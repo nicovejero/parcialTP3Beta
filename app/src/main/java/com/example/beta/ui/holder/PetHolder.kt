@@ -10,10 +10,10 @@ class PetHolder(private val binding: ItemFragmentMascotaBinding) : RecyclerView.
 
     val toggleButton: ToggleButton = binding.toggleBookmark
 
-    fun setCard(petName: String, petAge: Int, petGender: Boolean, petImg: List<String>, petBreed: String, petSubBreed: String?) {
+    fun setCard(petName: String, petAge: Int, petGender: String, petImg: List<String>, petBreed: String, petSubBreed: String?) {
         binding.tvCardNombre.text = petName
         binding.tvCardEdad.text = petAge.toString()
-        binding.tvCardGenero.text = if (petGender) "Macho" else "Hembra"
+        binding.tvCardGenero.text = petGender
         binding.tvCardRaza.text = petBreed
         binding.tvCardSubRaza.text = petSubBreed ?: "" // Assuming petSubBreed can be null and you want to set an empty string in that case
 

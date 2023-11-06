@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import com.example.beta.InicioActivity
 import com.example.beta.MainActivity
 import com.example.beta.R
-import com.example.beta.data.database.entities.User
+import com.example.beta.data.model.User
 import com.example.beta.databinding.FragmentPerfilBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
