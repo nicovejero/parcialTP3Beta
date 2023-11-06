@@ -7,17 +7,18 @@
     android:layout_margin="5dp">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewElevatedStyle"
         android:layout_width="300dp"
         android:layout_height="150dp"
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
         android:id="@+id/cardAdoption"
+        style="?attr/materialCardViewElevatedStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <ImageView
             android:id="@+id/ivCardBackGround"
@@ -60,13 +61,17 @@
             android:textSize="13dp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView2"
+
+        <ToggleButton
+            android:id="@+id/toggleBookmark"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="250dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/favorito" />
+            android:background="@null"
+            android:textOff=""
+            android:textOn=""
+            android:drawableTop="@drawable/bookmark_selector"
+            android:padding="13dp" />
 
         <LinearLayout
             android:layout_width="100dp"

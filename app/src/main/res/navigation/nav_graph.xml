@@ -59,7 +59,10 @@
         android:label="Detalle"
         tools:layout="@layout/fragment_pet_in_adoption_detail">
         <argument android:name="pet"
-            app:argType="com.example.beta.data.database.entities.Pet"/>
+            app:argType="com.example.beta.data.model.PetModel"/>
+        <argument
+            android:name="user"
+            app:argType="string" />
     </fragment>
 
 </navigation>

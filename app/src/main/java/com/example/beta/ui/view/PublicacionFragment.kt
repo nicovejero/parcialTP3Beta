@@ -2,7 +2,6 @@ package com.example.beta.ui.view
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,10 +14,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.beta.R
-import com.example.beta.data.database.entities.Pet
+import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentPublicacionBinding
 import com.example.beta.ui.viewmodel.PublicacionViewModel
-import com.example.beta.util.Result
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -94,6 +92,36 @@ class PublicacionFragment : Fragment() {
         }
     }
 
+    private fun resetFields() {
+        // Reset EditText fields
+        binding.eTNombrePet.text = null
+        binding.breedAutoComplete.setText("", false)
+        binding.subBreedAutoComplete.setText("", false)
+        binding.publicacionDescriptionInput.text = null
+        binding.ageSpinner.clearListSelection()
+        binding.locationsSpinner.clearListSelection()
+        binding.pesoDropdownContainer.text = null
+        binding.publicacionPhoneInput.text = null
+
+        // Reset ImageViews or other image selectors
+        // Assuming you have a method to clear the images or set to default
+        resetImages()
+
+        // Reset Spinners or AutoCompleteTextViews to default value
+        binding.ageSpinner.clearListSelection()
+
+        // Reset the switch to the default position
+        binding.genderSwitch.isChecked = false
+    }
+
+    private fun resetImages() {
+        // Clear the image selections here
+        // Example to reset image on ImageView
+        //Glide.with(this).clear(binding.profileImage)
+        //binding.profileImage.setImageDrawable(null) // or set to a default image if desired
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -105,6 +133,16 @@ class PublicacionFragment : Fragment() {
         binding.breedAutoComplete.setAdapter(breedsAdapter)
         binding.subBreedAutoComplete.setAdapter(subBreedsAdapter)
         binding.subBreedAutoComplete.showDropDown()
+
+        viewModel.resetFields.observe(viewLifecycleOwner) { shouldReset ->
+            // If you made resetFields nullable, then handle the potential null case here.
+            shouldReset?.let {
+                if (it) {
+                    resetFields()
+                    viewModel.onFieldsResetComplete()
+                }
+            }
+        }
 
         // Observe LiveData for breeds
         viewModel.breedsLiveData.observe(viewLifecycleOwner) { breedsList ->
@@ -138,7 +176,11 @@ class PublicacionFragment : Fragment() {
 
         // Set up the age spinner
         val ages = (1..20).toList() // Replace with your age range
+        val locations = listOf("CABA", "GBA", "Cordoba", "Rosario", "Mendoza", "Salta", "Tucuman", "Neuquen", "Mar del Plata", "La Plata", "Santa Fe", "San Juan", "San Luis", "Entre Rios", "Corrientes", "Misiones", "Chaco", "Formosa", "Jujuy", "La Rioja", "Santiago del Estero", "Catamarca", "Chubut", "Tierra del Fuego", "Santa Cruz").toList()
         val ageAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ages.map { it.toString() })
+        val locationsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, locations.map { it.toString() })
+
+        binding.locationsSpinner.setAdapter(locationsAdapter)
         binding.ageSpinner.setAdapter(ageAdapter)
 
         // Set up the gender switch
@@ -149,44 +191,37 @@ class PublicacionFragment : Fragment() {
             // Do something with the gender value if neede
         }
 
-
-        binding.buttonConfirm.setOnClickListener {
-            // Collect the data from the input fields
-            val petName = binding.eTNombrePet.text.toString()
-            val petBreed = binding.breedAutoComplete.text.toString()
-            val petSubBreed = binding.subBreedAutoComplete.text.toString()
-            val urlImage = "" // TODO: get image URL from image picker/upload
-            // Get the selected pet age from the spinner
-            val petAge = binding.ageSpinner.listSelection
-            // Get the selected gender from the switch
-            val petGender = binding.genderSwitch.isChecked
-
-            // Create Pet object
-            val pet = Pet(
-                petName = petName,
-                petBreed = petBreed,
-                petSubBreed = petSubBreed,
-                urlImage = urlImage,
-                petAge = petAge,
-                petGender = petGender
-            )
-
-            // Call ViewModel to add Pet
-            viewModel.addPet(pet) { result ->
-                when (result) {
-                    is Result.Success -> {
-                        // Handle success, e.g., by showing a success message and/or navigating back
-                    }
-                    is Result.Error -> {
-                        // Handle error, e.g., by showing an error message to the user
-                    }
-                }
-            }
+        //
+        binding.confirmAdoptionButton.setOnClickListener {
+            generatePetAndAdopt()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null // Avoid memory leak
+    private fun generatePetAndAdopt() {
+        val petName = binding.eTNombrePet.text.toString()
+        val petBreed = binding.breedAutoComplete.text.toString()
+        val petSubBreed = binding.subBreedAutoComplete.text.toString()
+        val petImages = binding.eTNombrePet.text.toString() //Reemplazar por urls de imagenes que carga el user
+        val urlImage = ArrayList<String>()
+        urlImage.add("https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg")
+        urlImage.add("https://inspirationseek.com/wp-content/uploads/2016/02/Cute-Dog-Images.jpg")
+        // Get the selected pet age from the spinner
+        val petAge = binding.ageSpinner.text.toString().toInt()
+        // Get the selected gender from the switch
+        val petGender = binding.genderSwitch.isChecked
+        val petWeight = binding.pesoDropdownContainer.text.toString().toDouble()
+        // Create Pet object
+        val petModel = PetModel(
+            "",
+            petName = petName,
+            petBreed = petBreed,
+            petSubBreed = petSubBreed,
+            urlImage = urlImage,
+            petAge = petAge,
+            petWeight = petWeight,
+            petGender = petGender
+        )
+        // Call ViewModel to add Pet
+        viewModel.addPet(petModel)
     }
 }

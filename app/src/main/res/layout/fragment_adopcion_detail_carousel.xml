@@ -203,14 +203,14 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="5dp"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem pellentesque velit donec congue. Lorem ipsum dolor sit amet, consectetur adipiscing elit pellentesque"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/adoptButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- boton adoptar -->
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/adoptButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

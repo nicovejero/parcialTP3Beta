@@ -1,17 +1,17 @@
 package com.example.beta.ui.view
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.beta.data.database.adapter.FilterChipAdapter
 import com.example.beta.data.database.adapter.PetAdoptableFirestoreAdapter
-import com.example.beta.data.database.entities.Pet
+import com.example.beta.data.model.PetModel
 import com.example.beta.data.model.ChipModel
 import com.example.beta.ui.viewmodel.HomeViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -20,31 +20,31 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.example.beta.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var petAdapter: PetAdoptableFirestoreAdapter
     private lateinit var filterAdapter: FilterChipAdapter
-    private lateinit var viewModel: HomeViewModel
     private lateinit var recyclerViewAdoption: RecyclerView
     private lateinit var recyclerViewFilter: RecyclerView
     private val db = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
+    private val viewModel: HomeViewModel by viewModels()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater,container, false)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        _binding = FragmentHomeBinding.inflate(inflater,container, false)
         val query = db.collection("pets")
         recyclerViewAdoption = binding.cardsRecyclerView
         recyclerViewFilter = binding.chipsRecyclerView
 
         // Initialize the adapter for the pet cards with a Firestore query
-        val petOptions = FirestoreRecyclerOptions.Builder<Pet>()
-            .setQuery(query, Pet::class.java)
+        val petModelOptions = FirestoreRecyclerOptions.Builder<PetModel>()
+            .setQuery(query, PetModel::class.java)
             .build()
-        petAdapter = PetAdoptableFirestoreAdapter(petOptions)
+        petAdapter = PetAdoptableFirestoreAdapter(petModelOptions, uid!!, viewLifecycleOwner.lifecycle)
 
         // Set up the RecyclerView for pet cards
         recyclerViewAdoption.adapter = petAdapter
@@ -89,8 +89,8 @@ class HomeFragment : Fragment() {
         }
 
         // Build the new options for the FirestoreRecyclerAdapter
-        val newOptions = FirestoreRecyclerOptions.Builder<Pet>()
-            .setQuery(newQuery, Pet::class.java)
+        val newOptions = FirestoreRecyclerOptions.Builder<PetModel>()
+            .setQuery(newQuery, PetModel::class.java)
             .build()
 
         // Update the adapter with the new options
@@ -108,4 +108,8 @@ class HomeFragment : Fragment() {
         petAdapter.stopListening()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
