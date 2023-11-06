@@ -60,14 +60,19 @@ class PublicacionViewModel @Inject constructor(
     fun addPet(petModel: PetModel) {
         if (userId != null) {
             isLoading.postValue(true)
+
+            // Set the creation timestamp here before adding to database
+            petModel.creationTimestamp = System.currentTimeMillis()
+
             db.collection("pets")
                 .add(petModel.toMap()) // Ensure Pet has a toMap() method
                 .addOnSuccessListener { documentReference ->
                     val petId = documentReference.id
                     petModel.petOwner = userId
                     petModel.petId = petId
+                    // No need to set the creationTimestamp again since it's already set
                     db.collection("pets").document(petId)
-                        .set(petModel)
+                        .set(petModel.toMap()) // Make sure toMap includes the timestamp
                         .addOnSuccessListener {
                             isLoading.postValue(false)
                             _resetFields.postValue(true) // Signal that fields should be reset
@@ -84,6 +89,7 @@ class PublicacionViewModel @Inject constructor(
                 }
         }
     }
+
 
     fun onFieldsResetComplete() {
         _resetFields.value = false

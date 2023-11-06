@@ -15,6 +15,7 @@ data class PetModel(
     var petOwner: String = "",
     var petLocation: String = "",
     val petAdopted: Boolean = false,
+    var creationTimestamp: Long = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -27,13 +28,23 @@ data class PetModel(
         parcel.readByte() != 0.toByte(),
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        parcel.readValue(Long::class.java.classLoader) as Long // Updated line
     )
 
-    constructor() : this("", "", "", "", emptyList(), 0, 0.0, false, "", "")
-
-    override fun describeContents(): Int {
-        return 0
+    override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel) {
+        writeString(petId)
+        writeString(petName)
+        writeString(petBreed)
+        writeString(petSubBreed)
+        writeStringList(urlImage)
+        writeInt(petAge)
+        writeDouble(petWeight)
+        writeByte(if (petGender) 1 else 0)
+        writeString(petOwner)
+        writeString(petLocation)
+        writeByte(if (petAdopted) 1 else 0)
+        writeValue(creationTimestamp) // Updated line
     }
 
     fun toMap(): Map<String, Any> {
@@ -48,22 +59,13 @@ data class PetModel(
             "petGender" to petGender,
             "petOwner" to petOwner,
             "petLocation" to petLocation,
-            "petAdopted" to petAdopted
+            "petAdopted" to petAdopted,
+            "creationTimestamp" to creationTimestamp
         )
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel) {
-        writeString(petId)
-        writeString(petName)
-        writeString(petBreed)
-        writeString(petSubBreed)
-        writeStringList(urlImage)
-        writeInt(petAge)
-        writeDouble(petWeight)
-        writeBoolean(petGender)
-        writeString(petOwner)
-        writeString(petLocation)
-        writeBoolean(petAdopted)
+    override fun describeContents(): Int {
+        return 0
     }
 
     companion object {

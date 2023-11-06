@@ -89,11 +89,6 @@ class PetInAdoptionDetailFragment : Fragment() {
         }
         // Consider placing the following button click listeners here if not already defined
 
-        binding.adoptButton.setOnClickListener {
-            uid?.let { userId ->
-                viewModel.adoptPet(petModel, userId)
-            } ?: Toast.makeText(requireContext(), "You must be logged in to adopt a pet", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setupRecyclerView(imageUrls: ArrayList<String>) {
