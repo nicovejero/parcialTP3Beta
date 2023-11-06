@@ -30,9 +30,10 @@
     <string name="eTDireccion_hint" translatable="false">Dirección</string>
     <string name="publishFr_pet_name">Nombre Pet</string>
     <string name="publishFr_choose_breed">Seleccioná la Raza</string>
-    <string name="publishFr_complete_peso">Completa el Peso</string>
+    <string name="publishFr_complete_peso">Completá el Peso</string>
     <string name="publishFr_choose_subbreed">Seleccioná la sub raza</string>
     <string name="publishFr_confirmButton_text">Poner en Adopción</string>
+    <string name="publishFr_complete_phone">Completá teléfono de contacto</string>
     <string name="dogs_api_base_url">https://dog.ceo/</string>
     <string name="favoritos_text">Favoritos</string>
     <string name="adopciones_text">Adopciones</string>
