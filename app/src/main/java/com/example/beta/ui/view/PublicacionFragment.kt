@@ -199,6 +199,7 @@ class PublicacionFragment : Fragment() {
         val petName = binding.eTNombrePet.text.toString().trim()
         val petBreed = binding.breedAutoComplete.text.toString().trim()
         val petSubBreed = binding.subBreedAutoComplete.text.toString().trim()
+        val petLocation= binding.locationsSpinner.text.toString().trim()
         // Assuming you want to get URLs of images uploaded by the user, you would have a different mechanism to retrieve them
         val urlImages = listOf(
             "https://www.insidedogsworld.com/wp-content/uploads/2016/03/Dog-Pictures.jpg",
@@ -207,7 +208,7 @@ class PublicacionFragment : Fragment() {
         val petAge = binding.ageSpinner.text.toString().toIntOrNull() ?: return null
         val petWeight = binding.pesoDropdownContainer.text.toString().toDoubleOrNull() ?: return null
         val petGender = if (binding.genderSwitch.isChecked) "Male" else "Female"
-
+        val petDescripcion =binding.publicacionDescriptionInput.text.toString()
         // Validate the input data and return null if any of the required fields are missing
         //if (petName.isEmpty() || petBreed.isEmpty()) return null
 
@@ -221,9 +222,10 @@ class PublicacionFragment : Fragment() {
             petWeight = petWeight,
             petGender = petGender,
             petOwner = "", // Assign the owner as needed
-            petLocation = "", // Assign the location as needed
+            petLocation = petLocation, // Assign the location as needed
             petAdopted = false, // Set the adopted status as needed
-            creationTimestamp = System.currentTimeMillis() // Use current time for creation timestamp
+            creationTimestamp = System.currentTimeMillis(), // Use current time for creation timestamp
+            petDescripcion = petDescripcion
         )
     }
 
