@@ -1,5 +1,6 @@
 package com.example.beta.ui.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -57,8 +58,15 @@ class SettingFragment : PreferenceFragmentCompat() {
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
-        AppCompatDelegate.setDefaultNightMode(nightMode)
-        true
+            AppCompatDelegate.setDefaultNightMode(nightMode)
+
+            // Save the night mode preference
+            val sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("night_mode", newValue)
+            editor.apply()
+
+            true
     }
     }
 }
