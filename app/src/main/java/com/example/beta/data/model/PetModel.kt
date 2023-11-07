@@ -15,7 +15,8 @@ data class PetModel(
     var petOwner: String = "",
     var petLocation: String = "",
     val petAdopted: Boolean = false,
-    var creationTimestamp: Long = 0
+    var creationTimestamp: Long = 0,
+    var petDescripcion: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -29,7 +30,8 @@ data class PetModel(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readByte() != 0.toByte(),
-        parcel.readValue(Long::class.java.classLoader) as Long // Updated line
+        parcel.readValue(Long::class.java.classLoader) as Long, // Updated line
+        parcel.readString()?: ""
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel) {
@@ -45,6 +47,7 @@ data class PetModel(
         writeString(petLocation)
         writeByte(if (petAdopted) 1 else 0)
         writeValue(creationTimestamp) // Updated line
+        writeString(petDescripcion)
     }
 
     fun toMap(): Map<String, Any> {
@@ -60,7 +63,8 @@ data class PetModel(
             "petOwner" to petOwner,
             "petLocation" to petLocation,
             "petAdopted" to petAdopted,
-            "creationTimestamp" to creationTimestamp
+            "creationTimestamp" to creationTimestamp,
+            "petDescripcion" to petDescripcion
         )
     }
 

@@ -8,15 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.example.beta.ImageViewActivity
 import com.example.beta.R
 import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentAdopcionDetailCarouselBinding
@@ -72,6 +68,7 @@ class PetInAdoptionDetailFragment : Fragment() {
         binding.petDetailAge.text = petModel.petAge.toString()
         binding.petDetailOwnerName.text = petModel.petOwner
         binding.petDetailLocation.text = petModel.petLocation
+        binding.PetDetailDescripcion.text= petModel.petDescripcion
 
         binding.petDetailCallButton.setOnClickListener {
             //initiateCall(petModel.contactNumber)
