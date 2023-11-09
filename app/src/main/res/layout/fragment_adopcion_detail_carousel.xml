@@ -45,7 +45,7 @@
 
             <!-- img owner -->
             <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/petDetailOwnerPicture"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -65,7 +65,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintStart_toEndOf="@+id/petDetailOwnerPicture"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.313"/>
 
@@ -79,7 +79,7 @@
             <!--                app:layout_constraintBottom_toBottomOf="parent"-->
             <!--                app:layout_constraintEnd_toEndOf="parent"-->
             <!--                app:layout_constraintHorizontal_bias="0.772"-->
-            <!--                app:layout_constraintStart_toEndOf="@+id/imageView3"-->
+            <!--                app:layout_constraintStart_toEndOf="@+id/petDetailOwnerPicture"-->
             <!--                app:layout_constraintTop_toTopOf="parent"-->
             <!--                app:layout_constraintVertical_bias="0.764" />-->
 
@@ -110,7 +110,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintStart_toEndOf="@+id/petDetailOwnerPicture"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.725"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

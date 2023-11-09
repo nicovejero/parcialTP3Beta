@@ -4,11 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -16,13 +19,13 @@ import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentPublicacionBinding
 import com.example.beta.domain.model.Breed
 import com.example.beta.ui.viewmodel.PublicacionViewModel
+import com.google.android.filament.Material
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PublicacionFragment : Fragment() {
-    private var _binding: FragmentPublicacionBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentPublicacionBinding
     private val viewModel: PublicacionViewModel by viewModels()
     private var selectedImageViewId: Int = 0
     private val db = FirebaseFirestore.getInstance()
@@ -38,9 +41,25 @@ class PublicacionFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentPublicacionBinding.inflate(inflater, container, false)
+        binding = FragmentPublicacionBinding.inflate(inflater, container, false)
+        setupBreedSelection()
         setupImageButtons()
         return binding.root
+    }
+
+    private fun setupBreedSelection() {
+        binding.breedAutoComplete.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, id: Long) {
+                // Get the selected breed ID from the adapter or the position
+                //val selectedBreedName = binding.breedAutoComplete.text.toString()
+                Log.e("SelectedBreedName: ", binding.breedAutoComplete.text.toString())
+                viewModel.onBreedSelected(3)
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {
+                // Handle case where nothing is selected, if necessary
+            }
+        }
     }
 
     private fun setupImageButtons() {
@@ -99,6 +118,7 @@ class PublicacionFragment : Fragment() {
             pesoDropdownContainer.text = null
             publicacionPhoneInput.text = null
             genderSwitch.isChecked = false
+
         }
         resetImages()
     }
@@ -124,6 +144,9 @@ class PublicacionFragment : Fragment() {
             updateBreedsList(breedsList)
         }
 
+        viewModel.subBreedsLiveData.observe(viewLifecycleOwner) { subBreedsList ->
+            updateSubBreedsList(subBreedsList)
+        }
         // Observe error LiveData
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             errorMessage?.let {
@@ -192,8 +215,6 @@ class PublicacionFragment : Fragment() {
         }
     }
 
-
-
     private fun generatePetInfo(): PetModel? {
         val petName = binding.eTNombrePet.text.toString().trim()
         val petBreed = binding.breedAutoComplete.text.toString().trim()
@@ -239,6 +260,5 @@ class PublicacionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 }

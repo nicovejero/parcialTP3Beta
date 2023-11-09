@@ -10,25 +10,16 @@ class PetHolder(private val binding: ItemFragmentMascotaBinding) : RecyclerView.
 
     val toggleButton: ToggleButton = binding.toggleBookmark
 
-    fun setCard(petName: String, petAge: Int, petGender: String, petImg: List<String>, petBreed: String, petSubBreed: String?) {
-        binding.tvCardNombre.text = petName
-        binding.tvCardEdad.text = petAge.toString()
-        binding.tvCardGenero.text = petGender
-        binding.tvCardRaza.text = petBreed
-        binding.tvCardSubRaza.text = petSubBreed ?: "" // Assuming petSubBreed can be null and you want to set an empty string in that case
+    fun bind(petModel: PetModel) {
+        binding.tvCardNombre.text = petModel.petName
+        binding.tvCardEdad.text = petModel.petAge.toString()
+        binding.tvCardGenero.text = petModel.petGender
+        binding.tvCardRaza.text = petModel.petBreed
+        binding.tvCardSubRaza.text = petModel.petSubBreed ?: ""
 
         Glide.with(itemView)
-            .load(petImg)
+            .load(petModel.urlImage[0])
             .into(binding.ivCardBackGround)
-    }
-
-    fun bind(petModel: PetModel) {
-        // ... Your binding logic ...
-
-        // Load image with Glide, set text fields, etc.
-        // Example:
-        binding.tvCardNombre.text = petModel.petName
-        // and so on for the rest of the pet's properties
     }
 
     fun getCardLayout() = binding.cardAdoption

@@ -17,8 +17,7 @@ import com.example.beta.ui.viewmodel.HomeViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var petAdapter: PetAdoptableFirestoreAdapter
     private lateinit var filterAdapter: FilterChipAdapter
     private val viewModel: HomeViewModel by viewModels()
@@ -27,19 +26,34 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(layoutInflater)
         setupRecyclerViews()
         setupObservers()
         viewModel.fetchPetBreeds()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setupRecyclerViews() {
+        val initialQuery = viewModel.getInitialPetQuery()
 
-        // Observe the LiveData for pet breeds
+        val options = FirestoreRecyclerOptions.Builder<PetModel>()
+            .setQuery(initialQuery, PetModel::class.java)
+            .build()
+
+        petAdapter = PetAdoptableFirestoreAdapter(options, viewModel.getUserId())
+        binding.cardsRecyclerView.adapter = petAdapter
+        binding.cardsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        filterAdapter = FilterChipAdapter(emptyList()) { breed ->
+            viewModel.updateSelectedBreeds(breed) // Ensure this matches the expected parameter type for the method.
+        }
+        binding.chipsRecyclerView.adapter = filterAdapter
+        binding.chipsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
+
+
+    private fun setupObservers() {
         viewModel.petBreeds.observe(viewLifecycleOwner) { breeds ->
-            // Update your filter chips UI with the breeds list
             filterAdapter.updateChips(breeds.map { breed ->
                 ChipModel(
                     id = breed.hashCode(),
@@ -48,47 +62,12 @@ class HomeFragment : Fragment() {
             })
         }
 
-        // Observe the LiveData for error messages
         viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
-            // Show the error message to the user, e.g. using a Toast
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
 
-        // Observe the LiveData for FirestoreRecyclerOptions
-        viewModel.petOptions.observe(viewLifecycleOwner) { newOptions ->
-            // Update the adapter with new options
-            petAdapter.updateOptions(newOptions)
-        }
-
-    }
-
-    private fun setupRecyclerViews() {
-        // Initialize the adapter for the pet cards with an empty FirestoreRecyclerOptions
-        val options = FirestoreRecyclerOptions.Builder<PetModel>()
-            .setQuery(viewModel.getInitialPetQuery(), PetModel::class.java)
-            .build()
-
-        petAdapter = PetAdoptableFirestoreAdapter(options, viewModel.getUserId())
-        binding.cardsRecyclerView.adapter = petAdapter
-        binding.cardsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        filterAdapter = FilterChipAdapter(emptyList(), viewModel::updateSelectedBreeds)
-        binding.chipsRecyclerView.adapter = filterAdapter
-        binding.chipsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    }
-
-    private fun setupObservers() {
-        // Observe the breeds LiveData from ViewModel
-        viewModel.breeds.observe(viewLifecycleOwner) { breeds ->
-            filterAdapter.updateChips(breeds)
-        }
-
-        // Observe the pet query LiveData from ViewModel
-        viewModel.petQuery.observe(viewLifecycleOwner) { query ->
-            val newOptions = FirestoreRecyclerOptions.Builder<PetModel>()
-                .setQuery(query, PetModel::class.java)
-                .build()
-            petAdapter.updateOptions(newOptions)
+        viewModel.petOptions.observe(viewLifecycleOwner) { options ->
+            petAdapter.updateOptions(options)
         }
     }
 
@@ -104,6 +83,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        petAdapter.stopListening() // Ensure you stop listening when the fragment view is destroyed
     }
 }

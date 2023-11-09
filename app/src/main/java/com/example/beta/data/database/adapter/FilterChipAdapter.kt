@@ -1,5 +1,6 @@
 package com.example.beta.data.database.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -22,7 +23,9 @@ class FilterChipAdapter(
     override fun onBindViewHolder(holder: ChipViewHolder, position: Int) {
         val chip = chips[position]
         holder.bind(chip, selectedChips.contains(chip.text))
+        Log.d("FilterChipAdapter", "Chip clicked: ${chip.text}")
         holder.itemView.setOnClickListener {
+
             // Use the chip's text for selection instead of its id
             if (selectedChips.contains(chip.text)) {
                 selectedChips.remove(chip.text)
@@ -39,13 +42,11 @@ class FilterChipAdapter(
     override fun getItemCount(): Int = chips.size
 
     fun updateChips(newChips: List<ChipModel>) {
-        // Update the chips list
         chips = newChips
-        // Reset selection
-        selectedChips.clear()
-        // Notify the adapter to refresh the list
         notifyDataSetChanged()
     }
+
+
 
     inner class ChipViewHolder(
         private val binding: ItemFilterChipBinding

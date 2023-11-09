@@ -7,44 +7,56 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.example.beta.data.database.adapter.PetAdoptableFirestoreAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.beta.data.database.adapter.PetOwnerFirestoreAdapter
 import com.example.beta.data.model.PetModel
 import com.example.beta.databinding.FragmentAdopcionesListBinding
 import com.example.beta.ui.viewmodel.AdopcionViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
 
 class AdopcionFragment : Fragment() {
-    private var _binding: FragmentAdopcionesListBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentAdopcionesListBinding
     private val viewModel: AdopcionViewModel by viewModels()
-    private var adapter: PetAdoptableFirestoreAdapter? = null
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    private lateinit var adapter: PetOwnerFirestoreAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAdopcionesListBinding.inflate(inflater, container, false)
+        binding = FragmentAdopcionesListBinding.inflate(inflater, container, false)
+        setupRecyclerViews()
+        setupObservers()
         return binding.root
+    }
+
+    private fun setupObservers() {
+        viewModel.petOptions.observe(viewLifecycleOwner) { options ->
+            adapter.updateOptions(options)
+        }
+    }
+    private fun setupRecyclerViews() {
+        val initialQuery = viewModel.getInitialPetQuery()
+
+        val options = FirestoreRecyclerOptions.Builder<PetModel>()
+            .setQuery(initialQuery, PetModel::class.java)
+            .build()
+
+        adapter = PetOwnerFirestoreAdapter(options)
+        binding.recyclerViewAdopciones.adapter = adapter
+        binding.recyclerViewAdopciones.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Fetch and subscribe to adopted pets when the view is created
-        viewModel.fetchAdoptedPets()
-
+        viewModel.getInitialPetQuery()
         viewModel.adoptedPetsQuery.observe(viewLifecycleOwner) { query ->
             if (query != null) {
                 val options = FirestoreRecyclerOptions.Builder<PetModel>()
                     .setQuery(query, PetModel::class.java)
                     .setLifecycleOwner(viewLifecycleOwner)
                     .build()
-                adapter?.updateOptions(options) ?: run {
-                    adapter = PetAdoptableFirestoreAdapter(options, userId)
-                    binding.recyclerViewAdopciones.adapter = adapter
-                }
+                adapter.updateOptions(options)
             }
         }
 
@@ -64,17 +76,16 @@ class AdopcionFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        adapter?.startListening()
+        adapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        adapter?.stopListening()
+        adapter.stopListening()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        adapter?.stopListening()
-        _binding = null
+        adapter.stopListening()
     }
 }
