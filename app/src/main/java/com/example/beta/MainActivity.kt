@@ -97,12 +97,10 @@ class MainActivity : AppCompatActivity() {
                     bottomNavView.visibility = View.GONE
                     navController.navigate(R.id.action_global_nav_drawer_perfil)
                     supportActionBar?.hide()
-                    Toast.makeText(this, "Item 1 selected in Drawer Menu", Toast.LENGTH_SHORT).show()
                 }
                 R.id.nav_drawer_configuracion -> {
                     bottomNavView.visibility = View.GONE
                     navController.navigate(R.id.action_global_nav_drawer_configuracion)
-                    Toast.makeText(this, "Item 2 selected in Drawer Menu", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     supportActionBar?.show()
