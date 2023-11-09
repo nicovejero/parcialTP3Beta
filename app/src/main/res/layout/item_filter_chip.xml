@@ -6,7 +6,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/filter_chip_text"
-        android:layout_marginHorizontal="5dp"
         app:chipIcon="@drawable/perrochip"
         app:chipBackgroundColor="#9175D3"
         />

@@ -13,24 +13,19 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.beta.R
 import com.example.beta.data.model.PetModel
-import com.example.beta.data.model.User
 import com.example.beta.databinding.FragmentAdopcionDetailCarouselBinding
 import com.example.beta.ui.holder.ImageAdapter
 import com.example.beta.ui.viewmodel.PetInAdoptionDetailViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class PetInAdoptionDetailFragment : Fragment() {
     private val args: PetInAdoptionDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentAdopcionDetailCarouselBinding
     private val viewModel: PetInAdoptionDetailViewModel by viewModels()
     private val petModel: PetModel by lazy { args.pet }
-    private val db = FirebaseFirestore.getInstance()
-    private val uid = FirebaseAuth.getInstance().currentUser?.uid!!
-    private var owner: User = User()
+    private val uid: String? by lazy { FirebaseAuth.getInstance().currentUser?.uid }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +33,7 @@ class PetInAdoptionDetailFragment : Fragment() {
     ): View {
         binding = FragmentAdopcionDetailCarouselBinding.inflate(inflater, container, false)
         setupUI()
-        val userDocRef = db.collection("users").document(uid)
-        userDocRef.get().addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot != null) {
-                owner = documentSnapshot.toObject(User::class.java)!!
-            }
-        }.addOnFailureListener {
-            // Handle any errors here
-        }
+
         // After setting up the UI with petModel, immediately fetch image URLs
         viewModel.getImageUrlsForPet(petModel.petId)
 
@@ -78,7 +66,7 @@ class PetInAdoptionDetailFragment : Fragment() {
         binding.petDetailWeight.text = petModel.petWeight.toString()
         binding.petDetailGender.text = petModel.petGender
         binding.petDetailAge.text = petModel.petAge.toString()
-        binding.petDetailOwnerName.text = owner.firstName
+        binding.petDetailOwnerName.text = petModel.petOwner
         binding.petDetailLocation.text = petModel.petLocation
         binding.PetDetailDescripcion.text= petModel.petDescripcion
         binding.petDetailCallButton.setOnClickListener {
@@ -86,13 +74,7 @@ class PetInAdoptionDetailFragment : Fragment() {
             initiateCall("123456789")
         }
 
-        Glide.with(requireContext())
-            .load(owner.urlImage)
-            .circleCrop()
-            .into(binding.petDetailOwnerPicture)
-
         binding.adoptButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Adopting pet...", Toast.LENGTH_SHORT).show()
             uid?.let { userId ->
                 viewModel.adoptPet(petModel, userId)
                 viewModel.markPetAsAdopted(petModel.petId)
