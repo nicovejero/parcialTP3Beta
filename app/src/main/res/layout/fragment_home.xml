@@ -35,7 +35,7 @@
             android:layout_gravity="start|top"
             android:paddingStart="16dp"
             android:paddingTop="16dp"
-            android:text="Title"
+            android:text="@string/filtros"
             android:textSize="18sp"
             android:textStyle="bold" />
 
