@@ -21,7 +21,6 @@ import com.example.beta.databinding.FragmentAdopcionDetailCarouselBinding
 import com.example.beta.ui.holder.ImageAdapter
 import com.example.beta.ui.viewmodel.PetInAdoptionDetailViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 
 class PetInAdoptionDetailFragment : Fragment() {
@@ -31,7 +30,7 @@ class PetInAdoptionDetailFragment : Fragment() {
     private val petModel: PetModel by lazy { args.pet }
     private val db = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid!!
-    private lateinit var owner: User
+    private var owner: User = User()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,6 +92,7 @@ class PetInAdoptionDetailFragment : Fragment() {
             .into(binding.petDetailOwnerPicture)
 
         binding.adoptButton.setOnClickListener {
+            Toast.makeText(requireContext(), "Adopting pet...", Toast.LENGTH_SHORT).show()
             uid?.let { userId ->
                 viewModel.adoptPet(petModel, userId)
                 viewModel.markPetAsAdopted(petModel.petId)

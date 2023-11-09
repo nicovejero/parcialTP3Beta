@@ -34,8 +34,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        // Ensure you have a valid query from the ViewModel before creating FirestoreRecyclerOptions.
-        val initialQuery = viewModel.getInitialPetQuery() ?: return // Add a null check to ensure the query is not null.
+        val initialQuery = viewModel.getInitialPetQuery()
 
         val options = FirestoreRecyclerOptions.Builder<PetModel>()
             .setQuery(initialQuery, PetModel::class.java)

@@ -1,12 +1,11 @@
 package com.example.beta.ui.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.example.beta.data.model.BreedModel
 import com.example.beta.data.model.PetModel
 import com.example.beta.domain.GetBreeds
 import com.example.beta.domain.GetSubBreeds
@@ -22,11 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class PublicacionViewModel @Inject constructor(
     private val getBreeds: GetBreeds,
-    private val getSubBreeds: GetSubBreeds // Renamed for clarity
+    private val getSubBreeds: GetSubBreeds
 ) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
-    //val breedsLiveData = MutableLiveData<List<Breed>>()
     val isLoading = MutableLiveData<Boolean>()
     private val _resetFields = MutableLiveData<Boolean?>().apply { value = false }
     val resetFields: LiveData<Boolean?> = _resetFields
@@ -76,6 +74,7 @@ class PublicacionViewModel @Inject constructor(
             try {
                 // Assuming getSubBreeds returns List<SubBreed>, map it to List<String>
                 val subBreedsList = getSubBreeds(breedId).map { it.subBreedName }
+                Log.e("subBreedsList", subBreedsList.toString() )
                 _subBreedsLiveData.postValue(subBreedsList)
             } catch (e: Exception) {
                 _subBreedsLiveData.postValue(emptyList())
@@ -88,12 +87,10 @@ class PublicacionViewModel @Inject constructor(
     fun addPet(petModel: PetModel) {
         if (userId != null) {
             isLoading.postValue(true)
-
-            // Set the creation timestamp here before adding to database
             petModel.creationTimestamp = System.currentTimeMillis()
 
             db.collection("pets")
-                .add(petModel.toMap()) // Ensure Pet has a toMap() method
+                .add(petModel.toMap())
                 .addOnSuccessListener { documentReference ->
                     val petId = documentReference.id
                     Log.d("Firestore", "Document added with ID: $petId")
@@ -101,21 +98,18 @@ class PublicacionViewModel @Inject constructor(
                     petModel.petOwner = userId
                     petModel.petId = petId
                     Log.d("Firestore", "petModel updated with petId: ${petModel.petId}")
-
+                    Toast.makeText(null, "Publicacion exitosa", Toast.LENGTH_SHORT).show()
                     db.collection("pets").document(petId)
                         .set(petModel.toMap())
                         .addOnSuccessListener {
                             Log.d("Firestore", "Document with ID: $petId updated successfully")
-                            // Further success handling
                         }
                         .addOnFailureListener { e ->
                             Log.w("Firestore", "Error updating document", e)
-                            // Handle failure
                         }
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firestore", "Error adding document", e)
-                    // Handle failure
                 }
         }
     }
