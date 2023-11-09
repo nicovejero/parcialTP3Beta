@@ -45,6 +45,7 @@
     <string name="publishFr_owner_name">Nombre del Dueño</string>
     <string name="filter_chip_text">Breed</string>
     <string name="home_mas_filtros">Mas Filtros</string>
+    <string name="home_filtro">Filtros</string>
     <string name="filtros">Filtros</string>
     <string name="publishFr_choose_location">Seleccioná la ubicación</string>
     <string name="publishFr_complete_description">Describí a la mascota amablemente para que tenga mas posibilidades de ser adoptada!</string>

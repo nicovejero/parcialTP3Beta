@@ -38,8 +38,18 @@
             android:text="@string/filtros"
             android:textSize="18sp"
             android:textStyle="bold" />
-
+      
         <!-- Clickable Text -->
+        <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:text="@string/home_filtro"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
         <TextView
             android:id="@+id/clickableTextView"
             android:layout_width="90dp"
