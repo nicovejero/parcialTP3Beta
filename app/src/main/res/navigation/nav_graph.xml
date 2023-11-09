@@ -22,37 +22,37 @@
         android:id="@+id/action_global_to_PetInAdoptionDetailFragment"
         app:destination="@id/petInAdoptionDetailFragment" />
     <!-- Fragmentos para Drawer Menu -->
-        <fragment
-            android:id="@+id/nav_drawer_perfil"
-            android:name="com.example.beta.ui.view.PerfilFragment" />
+    <fragment
+        android:id="@+id/nav_drawer_perfil"
+        android:name="com.example.beta.ui.view.PerfilFragment" />
 
-        <fragment
-            android:id="@+id/nav_drawer_configuracion"
-            android:name="com.example.beta.ui.view.SettingFragment" />
+    <fragment
+        android:id="@+id/nav_drawer_configuracion"
+        android:name="com.example.beta.ui.view.SettingFragment" />
 
     <!-- Fragmentos para Bottom Navigation Menu -->
-        <fragment
-            android:id="@+id/HomeFragment"
-            android:name="com.example.beta.ui.view.HomeFragment"
-            android:label="Home" >
-        </fragment>
-        <fragment
-            android:id="@+id/favoritos_fragment"
-            android:name="com.example.beta.ui.view.FavoritosFragment"
-            android:label="Favoritos" >
-        </fragment>
-        <fragment
-            android:id="@+id/adopcion_fragment"
-            android:name="com.example.beta.ui.view.AdopcionFragment"
-            android:label="Adopción" />
-        <fragment
-            android:id="@+id/publicacion_fragment"
-            android:name="com.example.beta.ui.view.PublicacionFragment"
-            android:label="Publicación" />
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.example.beta.ui.view.HomeFragment"
+        android:label="" >
+    </fragment>
+    <fragment
+        android:id="@+id/favoritos_fragment"
+        android:name="com.example.beta.ui.view.FavoritosFragment"
+        android:label="" >
+    </fragment>
+    <fragment
+        android:id="@+id/adopcion_fragment"
+        android:name="com.example.beta.ui.view.AdopcionFragment"
+        android:label="" />
+    <fragment
+        android:id="@+id/publicacion_fragment"
+        android:name="com.example.beta.ui.view.PublicacionFragment"
+        android:label="" />
     <fragment
         android:id="@+id/petInAdoptionDetailFragment"
         android:name="com.example.beta.ui.view.PetInAdoptionDetailFragment"
-        android:label="Detalle"
+        android:label=""
         tools:layout="@layout/fragment_pet_in_adoption_detail">
         <argument android:name="pet"
             app:argType="com.example.beta.data.model.PetModel"/>
