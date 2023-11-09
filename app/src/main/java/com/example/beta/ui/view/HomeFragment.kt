@@ -39,13 +39,7 @@ class HomeFragment : Fragment() {
 
         // Observe the LiveData for pet breeds
         viewModel.petBreeds.observe(viewLifecycleOwner) { breeds ->
-            // Update your filter chips UI with the breeds list
-            filterAdapter.updateChips(breeds.map { breed ->
-                ChipModel(
-                    id = breed.hashCode(),
-                    text = breed
-                )
-            })
+            filterAdapter.updateChips(breeds.map { ChipModel(id = it.hashCode(), text = it) })
         }
 
         // Observe the LiveData for error messages
@@ -72,7 +66,10 @@ class HomeFragment : Fragment() {
         binding.cardsRecyclerView.adapter = petAdapter
         binding.cardsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        filterAdapter = FilterChipAdapter(emptyList(), viewModel::updateSelectedBreeds)
+
+        filterAdapter = FilterChipAdapter(emptyList()) { breed ->
+            viewModel.updateSelectedBreeds(breed)
+        }
         binding.chipsRecyclerView.adapter = filterAdapter
         binding.chipsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }

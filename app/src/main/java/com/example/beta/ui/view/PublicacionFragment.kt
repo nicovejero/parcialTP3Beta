@@ -99,6 +99,7 @@ class PublicacionFragment : Fragment() {
             pesoDropdownContainer.text = null
             publicacionPhoneInput.text = null
             genderSwitch.isChecked = false
+
         }
         resetImages()
     }

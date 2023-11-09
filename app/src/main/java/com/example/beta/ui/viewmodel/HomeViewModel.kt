@@ -26,7 +26,7 @@ class HomeViewModel : ViewModel() {
         db.collection("pets")
             .get()
             .addOnSuccessListener { result ->
-                val breeds = result.documents.mapNotNull { it.getString("breed") }.distinct()
+                val breeds = result.documents.mapNotNull { it.getString("petBreed") }.distinct()
                 petBreeds.value = breeds
             }
             .addOnFailureListener { e ->
@@ -37,13 +37,19 @@ class HomeViewModel : ViewModel() {
     fun getInitialPetQuery(): Query {
         // Return a query that fetches non-adopted pets ordered by some criteria, such as timestamp
         return db.collection("pets")
-            //.whereEqualTo("adopted", false)
-            //.orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
+            .whereEqualTo("petAdopted", false)
+    }
+
+    fun getInitialBreedQuery(): Query {
+        // Return a query that fetches non-adopted pets ordered by some criteria, such as timestamp
+        return db.collection("pets")
+            .whereEqualTo("petAdopted", false)
+            .orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
     }
 
     fun getOrderedPetQuery(): Query {
         return db.collection("pets")
-        .whereEqualTo("adopted", false)
+        .whereEqualTo("petAdopted", false)
         .orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
     }
 
@@ -60,18 +66,15 @@ class HomeViewModel : ViewModel() {
     fun updateSelectedBreeds(selectedBreeds: Set<String>) {
         val query: Query = if (selectedBreeds.isNotEmpty()) {
             // If breeds are selected, adjust the query to filter by those breeds
-            db.collection("pets").whereIn("breed", selectedBreeds.toList()).whereEqualTo("adopted", false)
+            db.collection("pets").whereIn("petBreed", selectedBreeds.toList()).whereEqualTo("petAdopted", false)
         } else {
             // If no breeds are selected, use the original query that fetches all pets that are not adopted
-            db.collection("pets").whereEqualTo("adopted", false)
+            db.collection("pets").whereEqualTo("petAdopted", false)
         }
 
-        // Create new FirestoreRecyclerOptions for the updated query
         val options = FirestoreRecyclerOptions.Builder<PetModel>()
             .setQuery(query, PetModel::class.java)
             .build()
-
-        // Post the new options to the LiveData so that the UI can update the adapter
         petOptions.value = options
     }
 }
