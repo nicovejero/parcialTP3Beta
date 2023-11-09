@@ -69,7 +69,6 @@ class PetInAdoptionDetailFragment : Fragment() {
         binding.petDetailOwnerName.text = petModel.petOwner
         binding.petDetailLocation.text = petModel.petLocation
         binding.PetDetailDescripcion.text= petModel.petDescripcion
-
         binding.petDetailCallButton.setOnClickListener {
             //initiateCall(petModel.contactNumber)
             initiateCall("123456789")
