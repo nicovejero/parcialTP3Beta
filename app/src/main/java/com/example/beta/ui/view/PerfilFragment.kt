@@ -117,7 +117,8 @@ class PerfilFragment : Fragment() {
         binding.goBackImage.setOnClickListener{
 
             if (navController != null) {
-                navController.popBackStack(R.id.nav_graph, false)
+                navController.popBackStack()
+                navController.navigate(R.id.nav_graph)
             }
 
             if (activity is MainActivity) {
@@ -125,7 +126,6 @@ class PerfilFragment : Fragment() {
                 (activity as MainActivity).supportActionBar?.show()
             }
 
-            navController.popBackStack()
             true
         }
         super.onViewCreated(view, savedInstanceState)
