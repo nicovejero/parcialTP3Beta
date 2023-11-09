@@ -3,7 +3,6 @@ package com.example.beta.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.beta.data.model.ChipModel
 import com.example.beta.data.model.PetModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -13,68 +12,44 @@ import com.google.firebase.firestore.Query
 class HomeViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
-    private val _breeds = MutableLiveData<List<ChipModel>>()
-    val breeds: LiveData<List<ChipModel>> = _breeds
-    val petBreeds = MutableLiveData<List<String>>()
-    val petOptions = MutableLiveData<FirestoreRecyclerOptions<PetModel>>()
-    val errorMessage = MutableLiveData<String>()
-
-    private val _petQuery = MutableLiveData<Query>()
-    val petQuery: LiveData<Query> = _petQuery
+    private val _petBreeds = MutableLiveData<List<String>>()
+    val petBreeds: LiveData<List<String>> = _petBreeds
+    private val _petOptions = MutableLiveData<FirestoreRecyclerOptions<PetModel>>()
+    val petOptions: LiveData<FirestoreRecyclerOptions<PetModel>> = _petOptions
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
 
     fun fetchPetBreeds() {
         db.collection("pets")
+            .whereEqualTo("petAdopted", false)
             .get()
             .addOnSuccessListener { result ->
                 val breeds = result.documents.mapNotNull { it.getString("petBreed") }.distinct()
-                petBreeds.value = breeds
+                _petBreeds.value = breeds
             }
             .addOnFailureListener { e ->
-                errorMessage.value = e.localizedMessage
+                _errorMessage.value = e.localizedMessage
             }
     }
 
+    fun getUserId() = auth.currentUser?.uid ?: ""
+
     fun getInitialPetQuery(): Query {
-        // Return a query that fetches non-adopted pets ordered by some criteria, such as timestamp
         return db.collection("pets")
             .whereEqualTo("petAdopted", false)
-    }
-
-    fun getInitialBreedQuery(): Query {
-        // Return a query that fetches non-adopted pets ordered by some criteria, such as timestamp
-        return db.collection("pets")
-            .whereEqualTo("petAdopted", false)
-            .orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
-    }
-
-    fun getOrderedPetQuery(): Query {
-        return db.collection("pets")
-        .whereEqualTo("petAdopted", false)
-        .orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
-    }
-
-    fun getUserId(): String {
-        val userId: String? = auth.currentUser?.uid
-        if (userId != null) {
-            return userId
-        }
-        else {
-            return ""
-        }
     }
 
     fun updateSelectedBreeds(selectedBreeds: Set<String>) {
-        val query: Query = if (selectedBreeds.isNotEmpty()) {
-            // If breeds are selected, adjust the query to filter by those breeds
-            db.collection("pets").whereIn("petBreed", selectedBreeds.toList()).whereEqualTo("petAdopted", false)
-        } else {
-            // If no breeds are selected, use the original query that fetches all pets that are not adopted
-            db.collection("pets").whereEqualTo("petAdopted", false)
-        }
+        val query: Query = db.collection("pets").whereEqualTo("petAdopted", false)
+            .also {
+                if (selectedBreeds.isNotEmpty()) {
+                    it.whereIn("petBreed", selectedBreeds.toList())
+                }
+            }
 
         val options = FirestoreRecyclerOptions.Builder<PetModel>()
             .setQuery(query, PetModel::class.java)
             .build()
-        petOptions.value = options
+        _petOptions.value = options
     }
 }
