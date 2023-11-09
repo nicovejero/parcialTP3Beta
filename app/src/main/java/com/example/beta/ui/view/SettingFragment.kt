@@ -41,7 +41,8 @@ class SettingFragment : PreferenceFragmentCompat() {
 
         val goBackButton = findPreference<Preference>("back_key")
         goBackButton?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            navController.popBackStack(R.id.nav_graph, false)
+            navController.popBackStack()
+            navController.navigate(R.id.nav_graph)
 
             if (activity is MainActivity) {
                 (activity as MainActivity).setBottomNavViewVisibility(View.VISIBLE)
