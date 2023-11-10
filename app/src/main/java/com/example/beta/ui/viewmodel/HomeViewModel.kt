@@ -37,14 +37,8 @@ class HomeViewModel : ViewModel() {
     fun getInitialPetQuery(): Query {
         // Return a query that fetches non-adopted pets ordered by some criteria, such as timestamp
         return db.collection("pets")
-            .whereEqualTo("petAdopted", false)
-    }
-
-    fun getInitialBreedQuery(): Query {
-        // Return a query that fetches non-adopted pets ordered by some criteria, such as timestamp
-        return db.collection("pets")
-            .whereEqualTo("petAdopted", false)
-            .orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
+            //.whereEqualTo("adopted", false)
+            //.orderBy("creationtimestamp", Query.Direction.DESCENDING) // Replace "timestamp" with your actual field name
     }
 
     fun getOrderedPetQuery(): Query {
@@ -75,6 +69,7 @@ class HomeViewModel : ViewModel() {
         val options = FirestoreRecyclerOptions.Builder<PetModel>()
             .setQuery(query, PetModel::class.java)
             .build()
+
         petOptions.value = options
     }
 }
