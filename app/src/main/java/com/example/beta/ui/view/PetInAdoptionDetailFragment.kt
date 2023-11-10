@@ -79,8 +79,9 @@ class PetInAdoptionDetailFragment : Fragment() {
                 viewModel.adoptPet(petModel, userId)
                 viewModel.markPetAsAdopted(petModel.petId)
                 val action = PetInAdoptionDetailFragmentDirections.actionGlobalToAdopcionFragment()
-                findNavController().popBackStack(R.id.nav_graph, false)
-                findNavController().navigate(action)
+                findNavController().popBackStack()
+                findNavController().navigateUp()
+                Toast.makeText(requireContext(), "Adoptas a la mascota exitosamente", Toast.LENGTH_SHORT).show()
             } ?: Toast.makeText(requireContext(), "You must be logged in to adopt a pet", Toast.LENGTH_SHORT).show()
         }
         // Consider placing the following button click listeners here if not already defined
